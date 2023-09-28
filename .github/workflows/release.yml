@@ -1,0 +1,79 @@
+name: Test, Coverang, Archive and Tag
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  test-coverage-archive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run Tests and Generate Coverage Report
+        run: npm run test:cov
+
+      - name: Calculate coverage percentage
+        id: coverage
+        run: |
+          coverage_found=$(grep -Eo "[0-9]+(\.[0-9]+)?%" coverage/lcov-report/index.html | head -n 1)
+          coverage="${coverage_found%%.*}"
+          echo "$coverage"
+          echo "::set-output name=coverage::$coverage"
+
+      - name: Comment on PR if coverage is below 80%
+        if: ${{ steps.coverage.outputs.coverage < 80 }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const repo = context.repo.owner + '/' + context.repo.repo;
+            const message = 'A cobertura de teste está abaixo de 80%. Por favor, ajuste-a.';
+            const body = { body: message };
+            await github.rest.issues.createComment({ issue_number: prNumber, owner: context.repo.owner, repo: context.repo.repo, ...body });
+
+      - name: Run Tests and Generate Coverage Report
+        if: ${{ steps.coverage.outputs.coverage > 80 }}
+        run: npm run build_pipe
+
+      - name: Archive build artifact
+        if: ${{ steps.coverage.outputs.coverage > 80 }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: dist
+
+  create-tag-and-upload:
+    needs: test-coverage-archive
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get package version
+        id: get-version
+        run: echo ::set-output name=version::$(node -e "console.log(require('./package.json').version)")
+
+      - name: Create git tag
+        run: git tag ${{ steps.get-version.outputs.version }}
+      
+      - name: Push git tag
+        run: git push origin ${{ steps.get-version.outputs.version }}  
