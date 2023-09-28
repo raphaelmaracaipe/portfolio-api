@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+      "@app/lb-base64": [
+        "libs/lb-base64/src"
+      ],
+      "@app/lb-base64/*": [
+        "libs/lb-base64/src/*"
+      ],
+      "@app/lb-email": [
+        "libs/lb-email/src"
+      ],
+      "@app/lb-email/*": [
+        "libs/lb-email/src/*"
+      ],
+      "@app/lb-jwt": [
+        "libs/lb-jwt/src"
+      ],
+      "@app/lb-jwt/*": [
+        "libs/lb-jwt/src/*"
+      ],
+      "@app/lb-keys": [
+        "libs/lb-keys/src"
+      ],
+      "@app/lb-keys/*": [
+        "libs/lb-keys/src/*"
+      ],
+      "@app/lb-crypto": [
+        "libs/lb-crypto/src"
+      ],
+      "@app/lb-crypto/*": [
+        "libs/lb-crypto/src/*"
+      ]
+    }
+  }
+}
