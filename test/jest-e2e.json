@@ -1,0 +1,25 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/lb-base64/(.*)": "<rootDir>/../libs/lb-base64/src/$1",
+    "@app/lb-base64": "<rootDir>/../libs/lb-base64/src",
+    "@app/lb-email/(.*)": "<rootDir>/../libs/lb-email/src/$1",
+    "@app/lb-email": "<rootDir>/../libs/lb-email/src",
+    "@app/lb-jwt/(.*)": "<rootDir>/../libs/lb-jwt/src/$1",
+    "@app/lb-jwt": "<rootDir>/../libs/lb-jwt/src",
+    "@app/lb-keys/(.*)": "<rootDir>/../libs/lb-keys/src/$1",
+    "@app/lb-keys": "<rootDir>/../libs/lb-keys/src",
+    "@app/lb-crypto/(.*)": "<rootDir>/../libs/lb-crypto/src/$1",
+    "@app/lb-crypto": "<rootDir>/../libs/lb-crypto/src"
+  }
+}
