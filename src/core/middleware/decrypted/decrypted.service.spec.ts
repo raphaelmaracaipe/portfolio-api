@@ -76,6 +76,7 @@ describe('DecryptedService', () => {
       await decryptedService.start(mockRequest, mockNext);
       expect(true).toEqual(true);
     } catch (e) {
+      console.log(e)
       expect(true).toEqual(false);
     }
   });

@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class IndexController {
   @Get()
   getHello(): string {
-    return 'Api on';
+    return 'Api online';
   }
 }
