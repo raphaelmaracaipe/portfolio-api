@@ -41,7 +41,7 @@ export class DecryptedService {
   }
 
   private async decryptSeed(seed: string): Promise<string> {
-    return await this.crypto.decryptAES(seed, this.key, this.iv);
+    return await this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
   }
 
   private async processOfDecryptBody(
