@@ -8,7 +8,7 @@ import { Configuration } from 'src/config/configuration';
 import { Codes } from '../../../core/codes/codes';
 import { ExceptionBadRequest } from '../../../core/exeptions/exceptionBadRequest';
 import { RegexService } from '../../../core/regex/regex.service';
-import { DEVICE_ID_REGEX } from '../../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_SEED } from '../../../core/regex/regex';
 
 export class DecryptedService {
   private key = this.configService.get('KEY_DEFAULT');
@@ -21,7 +21,7 @@ export class DecryptedService {
     private readonly crypto: LbCryptoService,
     private readonly configService: ConfigService<Configuration>,
     private readonly regex: RegexService,
-  ) {}
+  ) { }
 
   async start(req: Request, next: (error?: any) => void) {
     const { seed, dev, device_id } = req.headers;
@@ -30,18 +30,22 @@ export class DecryptedService {
       return next();
     }
 
-    const seedDecrypted = await this.decryptSeed(seed.toString());
-    this.processOfDecryptBody(req, seedDecrypted, next);
+    const seedDecryptedAndValid = await this.decryptSeedAndValid(seed.toString());
+    this.processOfDecryptBody(req, seedDecryptedAndValid, next);
   }
 
   private validDeviceId(deviceId: string) {
-    if (!this.regex.check(DEVICE_ID_REGEX, deviceId)) {
+    if (!this.regex.check(REGEX_DEVICE_ID, deviceId)) {
       throw new ExceptionBadRequest(this.codes.DEVICE_ID_INVALID);
     }
   }
 
-  private async decryptSeed(seed: string): Promise<string> {
-    return await this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
+  private async decryptSeedAndValid(seed: string): Promise<string> {
+    const seedDecrypted = await this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
+    if (!this.regex.check(REGEX_SEED, seedDecrypted)) {
+      throw new ExceptionBadRequest(this.codes.SEED_INVALID);
+    }
+    return seedDecrypted
   }
 
   private async processOfDecryptBody(
@@ -51,7 +55,7 @@ export class DecryptedService {
   ) {
     try {
       const { device_id } = req.headers;
-      const dataOfBodyEncrypted: { data: string } = req.body;
+      const dataOfBodyEncrypted: { data: any } = req.body;
 
       let key = this.key;
       const keyRegistered = await this.keyRepository.findOne({

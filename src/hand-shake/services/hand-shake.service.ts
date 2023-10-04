@@ -5,7 +5,7 @@ import { Codes } from '../../core/codes/codes';
 import { ExceptionBadRequest } from '../../core/exeptions/exceptionBadRequest';
 import { MongoRepository } from 'typeorm';
 import { RegexService } from '../../core/regex/regex.service';
-import { KEY_REGEX } from '../../core/regex/regex';
+import { REGEX_KEY } from '../../core/regex/regex';
 
 @Injectable()
 export class HandShakeService {
@@ -32,7 +32,7 @@ export class HandShakeService {
   }
 
   private async checkIfYourKeyIsValid(key: string) {
-    if (!(await this.regexService.check(KEY_REGEX, key))) {
+    if (!(await this.regexService.check(REGEX_KEY, key))) {
       throw new ExceptionBadRequest(this.codes.USER_KEY_INVALID);
     }
   }

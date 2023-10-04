@@ -11,7 +11,7 @@ import { Key } from '../../core/models/key.model';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../../config/configuration';
 import { RegexService } from '../../core/regex/regex.service';
-import { DEVICE_ID_REGEX, KEY_REGEX } from '../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_KEY } from '../../core/regex/regex';
 
 describe('HandShakeV1Controller', () => {
   let app: INestApplication;
@@ -26,7 +26,7 @@ describe('HandShakeV1Controller', () => {
 
   const mockRequest: Request = {
     headers: {
-      device_id: regexService.generateRandom(DEVICE_ID_REGEX),
+      device_id: regexService.generateRandom(REGEX_DEVICE_ID),
     },
   } as any;
 
@@ -60,7 +60,7 @@ describe('HandShakeV1Controller', () => {
 
     await handShakeV1Controller.create(
       {
-        key: regexService.generateRandom(KEY_REGEX),
+        key: regexService.generateRandom(REGEX_KEY),
       },
       mockRequest,
       mockResponse,
@@ -74,7 +74,7 @@ describe('HandShakeV1Controller', () => {
 
     await handShakeV1Controller.create(
       {
-        key: regexService.generateRandom(KEY_REGEX),
+        key: regexService.generateRandom(REGEX_KEY),
       },
       mockRequest,
       mockResponse,
