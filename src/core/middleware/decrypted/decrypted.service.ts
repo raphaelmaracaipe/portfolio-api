@@ -24,14 +24,13 @@ export class DecryptedService {
   ) { }
 
   async start(req: Request, next: (error?: any) => void) {
-    const { seed, dev, device_id } = req.headers;
+    const { dev, device_id } = req.headers;
     this.validDeviceId(String(device_id));
     if (dev && dev === 'true') {
       return next();
     }
 
-    const seedDecryptedAndValid = await this.decryptSeedAndValid(seed.toString());
-    this.processOfDecryptBody(req, seedDecryptedAndValid, next);
+    this.processOfDecryptBody(req, next);
   }
 
   private validDeviceId(deviceId: string) {
@@ -40,38 +39,41 @@ export class DecryptedService {
     }
   }
 
-  private async decryptSeedAndValid(seed: string): Promise<string> {
-    const seedDecrypted = await this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
-    if (!this.regex.check(REGEX_SEED, seedDecrypted)) {
-      throw new ExceptionBadRequest(this.codes.SEED_INVALID);
-    }
-    return seedDecrypted
-  }
-
   private async processOfDecryptBody(
     req: Request,
-    seed: string,
     next: (error?: any) => void,
   ) {
     try {
-      const { device_id } = req.headers;
+      const { device_id, seed } = req.headers;
       const dataOfBodyEncrypted: { data: any } = req.body;
 
       let key = this.key;
       const keyRegistered = await this.keyRepository.findOne({
         where: { deviceId: device_id },
       });
+
       if (keyRegistered) {
         key = keyRegistered.key;
       }
 
       const { data } = dataOfBodyEncrypted
-      const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seed)
+
+      const seedDecryptedAndValid = await this.decryptSeedAndValid(key, seed.toString());
+      const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
+
       req.body = JSON.parse(bodyDecodead);
       next();
     } catch (e) {
       next(e);
     }
+  }
+
+  private async decryptSeedAndValid(key: string, seed: string): Promise<string> {
+    const seedDecrypted = await this.crypto.decryptAES(decodeURIComponent(seed), key, this.iv);
+    if (!this.regex.check(REGEX_SEED, seedDecrypted)) {
+      throw new ExceptionBadRequest(this.codes.SEED_INVALID);
+    }
+    return seedDecrypted
   }
 
   private getDataBody(data: string): string {
