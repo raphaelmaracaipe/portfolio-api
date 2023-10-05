@@ -65,12 +65,20 @@ export class DecryptedService {
         key = keyRegistered.key;
       }
 
-      req.body = JSON.parse(
-        this.crypto.decryptAES(dataOfBodyEncrypted.data, key, seed),
-      );
+      const { data } = dataOfBodyEncrypted
+      const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seed)
+      req.body = JSON.parse(bodyDecodead);
       next();
     } catch (e) {
       next(e);
+    }
+  }
+
+  private getDataBody(data: string): string {
+    if (data.indexOf('%') > 0) {
+      return decodeURIComponent(data)
+    } else {
+      return data
     }
   }
 }
