@@ -21,7 +21,7 @@ export class ValidCodeService {
     private readonly jwt: LbJwtService,
     private readonly base64: LbBase64Service,
     private readonly codes: Codes,
-  ) {}
+  ) { }
 
   async valid(
     code: number,
@@ -33,8 +33,9 @@ export class ValidCodeService {
     }
 
     const { phone, id } = userOfDB;
-    const { refreshToken, accessToken, publicKey, privateKey, key } =
-      await this.generateToken(phone);
+    const {
+      refreshToken, accessToken, publicKey, privateKey, key
+    } = await this.generateToken(phone);
 
     await this.tokenRepository.deleteMany({ idUser: id.toString() });
     await this.userRepository.updateOne(
