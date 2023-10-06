@@ -58,10 +58,12 @@ export class DecryptedService {
 
       const { data } = dataOfBodyEncrypted
 
-      const seedDecryptedAndValid = await this.decryptSeedAndValid(key, seed.toString());
-      const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
+      if (data) {
+        const seedDecryptedAndValid = await this.decryptSeedAndValid(key, seed.toString());
+        const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
 
-      req.body = JSON.parse(bodyDecodead);
+        req.body = JSON.parse(bodyDecodead);
+      }
       next();
     } catch (e) {
       next(e);
