@@ -18,7 +18,7 @@ export class ResponseEncrypted {
     private readonly keyRepository: MongoRepository<Key>,
     private readonly crypto: LbCryptoService,
     private readonly configService: ConfigService<Configuration>,
-  ) {}
+  ) { }
 
   async encrypted(iResponse: IResponse): Promise<Response> {
     const { response, httpStatus } = iResponse;
@@ -36,7 +36,7 @@ export class ResponseEncrypted {
         return data;
       }
 
-      let dataEncrypted = {};
+      let dataEncrypted = '{}';
       if ((!iv || iv == '') && (!iResponse.key || iResponse.key == '')) {
         const { seed, device_id } = request.headers;
         const { key } = await this.keyRepository.findOne({
@@ -57,14 +57,14 @@ export class ResponseEncrypted {
         );
       }
 
-      return { data: dataEncrypted };
+      return { data: dataEncrypted.toString() };
     } catch (e) {
       return data;
     }
   }
 
   private decryptSeed(seed: string): string {
-    return this.crypto.decryptAES(seed, this.key, this.iv);
+    return this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
   }
 
   private checkData(data?: any): any {

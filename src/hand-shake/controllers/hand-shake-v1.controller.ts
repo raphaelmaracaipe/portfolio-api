@@ -34,11 +34,11 @@ export class HandShakeV1Controller {
     private readonly handShakeService: HandShakeService,
     private readonly responseEncrypted: ResponseEncrypted,
     private readonly configService: ConfigService<Configuration>,
-  ) {}
+  ) { }
 
   @Post('')
   @ApiResponse({
-    status: HttpStatus.CREATED,
+    status: HttpStatus.OK,
     description: 'The record has been successfully created.',
   })
   @ApiResponse({
@@ -57,7 +57,7 @@ export class HandShakeV1Controller {
     return await this.responseEncrypted.encrypted({
       request: req,
       response: res,
-      httpStatus: HttpStatus.CREATED,
+      httpStatus: HttpStatus.OK,
       iv: this.iv,
       key: this.key,
     });

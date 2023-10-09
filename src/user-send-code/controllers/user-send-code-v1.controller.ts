@@ -32,7 +32,7 @@ export class UserSendCodeV1Controller {
 
   @Post('code')
   @ApiResponse({
-    status: HttpStatus.CREATED,
+    status: HttpStatus.OK,
     description: 'The record has been successfully created.',
   })
   @ApiResponse({
@@ -53,7 +53,7 @@ export class UserSendCodeV1Controller {
     });
 
     return this.responseEncrypted.encrypted({
-      httpStatus: HttpStatus.CREATED,
+      httpStatus: HttpStatus.OK,
       request: req,
       response: res,
     });

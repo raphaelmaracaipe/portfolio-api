@@ -66,7 +66,7 @@ describe('HandShakeV1Controller', () => {
       mockResponse,
     );
 
-    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK);
   });
 
   it('when recive all data and exist return success but not saved again', async () => {
@@ -80,7 +80,7 @@ describe('HandShakeV1Controller', () => {
       mockResponse,
     );
 
-    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK);
   });
 
   afterEach(async () => {
