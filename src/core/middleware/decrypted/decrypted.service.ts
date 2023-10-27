@@ -13,6 +13,7 @@ import { REGEX_DEVICE_ID, REGEX_SEED } from '../../../core/regex/regex';
 export class DecryptedService {
   private key = this.configService.get('KEY_DEFAULT');
   private iv = this.configService.get('IV_DEFAULT');
+  private deviceIdDecoded = ""
 
   constructor(
     @InjectRepository(Key)
@@ -25,7 +26,8 @@ export class DecryptedService {
 
   async start(req: Request, next: (error?: any) => void) {
     const { dev, device_id } = req.headers;
-    this.validDeviceId(String(device_id));
+    this.deconderDeviceId(device_id);
+    this.validDeviceId();
     if (dev && dev === 'true') {
       return next();
     }
@@ -33,8 +35,12 @@ export class DecryptedService {
     this.processOfDecryptBody(req, next);
   }
 
-  private validDeviceId(deviceId: string) {
-    if (!this.regex.check(REGEX_DEVICE_ID, deviceId)) {
+  private deconderDeviceId(deviceId: any) {
+    this.deviceIdDecoded = decodeURIComponent(deviceId);
+  }
+
+  private validDeviceId() {
+    if (!this.regex.check(REGEX_DEVICE_ID, this.deviceIdDecoded)) {
       throw new ExceptionBadRequest(this.codes.DEVICE_ID_INVALID);
     }
   }
@@ -63,6 +69,10 @@ export class DecryptedService {
         const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
 
         req.body = JSON.parse(bodyDecodead);
+        req.headers = {
+          ...req.headers,
+          device_id: this.deviceIdDecoded
+        }
       }
       next();
     } catch (e) {
