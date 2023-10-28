@@ -68,7 +68,12 @@ export class DecryptedService {
         const seedDecryptedAndValid = await this.decryptSeedAndValid(seed.toString());
         const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
 
-        req.body = JSON.parse(bodyDecodead);
+        if(bodyDecodead == '') {
+          req.body = '';          
+        } else {
+          req.body = JSON.parse(bodyDecodead);
+        }
+
         req.headers = {
           ...req.headers,
           device_id: this.deviceIdDecoded

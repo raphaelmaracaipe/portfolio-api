@@ -29,21 +29,24 @@ export class ResponseEncrypted {
 
   private async createBodyEncrypt(iResponse: IResponse): Promise<any> {
     const { request, data, iv } = iResponse;
-    const { dev } = request.headers;
+    const { dev, seed } = request.headers;
 
     try {
       if (dev && dev === 'true') {
         return data;
       }
 
+
       let dataEncrypted = '{}';
+
+      const seedDecryted = await this.decryptSeed(seed.toString());
       if ((!iv || iv == '') && (!iResponse.key || iResponse.key == '')) {
-        const { seed, device_id } = request.headers;
+        const { device_id } = request.headers;
         const { key } = await this.keyRepository.findOne({
           where: { deviceId: device_id.toString() },
         });
 
-        const seedDecryted = await this.decryptSeed(seed.toString());
+        
         dataEncrypted = this.crypto.encryptAES(
           this.checkData(data),
           key,
@@ -53,7 +56,7 @@ export class ResponseEncrypted {
         dataEncrypted = this.crypto.encryptAES(
           this.checkData(data),
           iResponse.key,
-          iv,
+          seedDecryted,
         );
       }
 
@@ -69,7 +72,7 @@ export class ResponseEncrypted {
 
   private checkData(data?: any): any {
     if (!data) {
-      return '';
+      return '{}';
     } else if (typeof data == 'object') {
       return JSON.stringify(data);
     } else {
