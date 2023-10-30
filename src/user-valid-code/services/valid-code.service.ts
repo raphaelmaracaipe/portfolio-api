@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { LbBase64Service } from '@app/lb-base64';
 import { LbJwtService } from '@app/lb-jwt';
 import { LbKeysService } from '@app/lb-keys';
@@ -77,7 +77,7 @@ export class ValidCodeService {
     return await this.userRepository.findOne({
       where: {
         isDeleted: false,
-        _id: ObjectID(idUser),
+        _id: new ObjectId(idUser),
       },
     });
   }
