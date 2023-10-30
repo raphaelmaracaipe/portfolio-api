@@ -94,7 +94,7 @@ export class DecryptedService {
   }
 
   private getDataBody(data: string): string {
-    if (data.indexOf('%') > 0) {
+    if (data.indexOf('%') > -1) {
       return decodeURIComponent(data)
     } else {
       return data
