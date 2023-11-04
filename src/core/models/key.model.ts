@@ -1,6 +1,6 @@
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
-@Entity('keys')
+@Entity('KeysOfCommunicationWithServer')
 export class Key {
   @ObjectIdColumn()
   id?: any;
