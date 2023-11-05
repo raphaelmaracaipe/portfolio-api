@@ -4,7 +4,7 @@ import { MongoRepository } from 'typeorm';
 import { User } from '../../core/models/user.model';
 import { Test } from '@nestjs/testing';
 import { Token } from '../../core/models/token.model';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { Codes } from '../../core/codes/codes';
 import { LbBase64Service } from '@app/lb-base64';
 import { LbJwtService } from '@app/lb-jwt';
@@ -18,7 +18,7 @@ describe('ValidCodeService', () => {
   const timeToValidationCode = 30;
 
   const userDTO: User = {
-    id: ObjectID('644d70b4573a660aa0ee65a4'),
+    id: new ObjectId('644d70b4573a660aa0ee65a4'),
     phone: '+5599999999',
     passphrase: 'AAAA',
     privateKey: 'BBBB',

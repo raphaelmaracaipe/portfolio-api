@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { LbBase64Service } from '@app/lb-base64';
 import { LbJwtService } from '@app/lb-jwt';
 import { LbKeysService } from '@app/lb-keys';
@@ -21,7 +21,7 @@ export class ValidCodeService {
     private readonly jwt: LbJwtService,
     private readonly base64: LbBase64Service,
     private readonly codes: Codes,
-  ) {}
+  ) { }
 
   async valid(
     code: number,
@@ -33,8 +33,9 @@ export class ValidCodeService {
     }
 
     const { phone, id } = userOfDB;
-    const { refreshToken, accessToken, publicKey, privateKey, key } =
-      await this.generateToken(phone);
+    const {
+      refreshToken, accessToken, publicKey, privateKey, key
+    } = await this.generateToken(phone);
 
     await this.tokenRepository.deleteMany({ idUser: id.toString() });
     await this.userRepository.updateOne(
@@ -76,7 +77,7 @@ export class ValidCodeService {
     return await this.userRepository.findOne({
       where: {
         isDeleted: false,
-        _id: ObjectID(idUser),
+        _id: new ObjectId(idUser),
       },
     });
   }

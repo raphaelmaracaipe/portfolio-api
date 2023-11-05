@@ -1,9 +1,9 @@
-import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
-@Entity('keys')
+@Entity('KeysOfCommunicationWithServer')
 export class Key {
   @ObjectIdColumn()
-  id?: ObjectID;
+  id?: any;
 
   @Column()
   idUser: string;

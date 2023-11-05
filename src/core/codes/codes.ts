@@ -10,4 +10,6 @@ export class Codes {
   USER_KEY_INVALID = 2004;
 
   DEVICE_ID_INVALID = 3001;
+
+  SEED_INVALID = 4001;
 }

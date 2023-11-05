@@ -18,7 +18,7 @@ export class ResponseEncrypted {
     private readonly keyRepository: MongoRepository<Key>,
     private readonly crypto: LbCryptoService,
     private readonly configService: ConfigService<Configuration>,
-  ) {}
+  ) { }
 
   async encrypted(iResponse: IResponse): Promise<Response> {
     const { response, httpStatus } = iResponse;
@@ -29,21 +29,24 @@ export class ResponseEncrypted {
 
   private async createBodyEncrypt(iResponse: IResponse): Promise<any> {
     const { request, data, iv } = iResponse;
-    const { dev } = request.headers;
+    const { dev, seed } = request.headers;
 
     try {
       if (dev && dev === 'true') {
         return data;
       }
 
-      let dataEncrypted = {};
+
+      let dataEncrypted = '{}';
+
+      const seedDecryted = await this.decryptSeed(seed.toString());
       if ((!iv || iv == '') && (!iResponse.key || iResponse.key == '')) {
-        const { seed, device_id } = request.headers;
+        const { device_id } = request.headers;
         const { key } = await this.keyRepository.findOne({
           where: { deviceId: device_id.toString() },
         });
 
-        const seedDecryted = await this.decryptSeed(seed.toString());
+        
         dataEncrypted = this.crypto.encryptAES(
           this.checkData(data),
           key,
@@ -53,23 +56,23 @@ export class ResponseEncrypted {
         dataEncrypted = this.crypto.encryptAES(
           this.checkData(data),
           iResponse.key,
-          iv,
+          seedDecryted,
         );
       }
 
-      return { data: dataEncrypted };
+      return { data: dataEncrypted.toString() };
     } catch (e) {
       return data;
     }
   }
 
   private decryptSeed(seed: string): string {
-    return this.crypto.decryptAES(seed, this.key, this.iv);
+    return this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
   }
 
   private checkData(data?: any): any {
     if (!data) {
-      return '';
+      return '{}';
     } else if (typeof data == 'object') {
       return JSON.stringify(data);
     } else {
