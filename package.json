@@ -12,7 +12,7 @@
     "build_pipe": "nest build && node ./scripts/build_pipe.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "set NODE_ENV=local&&set SWAGGER=true&& nest start --watch",
+    "start:dev": "set NODE_ENV=local&& nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "set NODE_ENV=prod&& node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
