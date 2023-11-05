@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Key } from '../../core/models/key.model';
 import { Codes } from '../../core/codes/codes';
@@ -17,7 +17,7 @@ export class HandShakeService {
   ) {}
 
   async saveValue(key: string, deviceId: string) {
-    this.checkIfYourKeyIsValid(key);
+    await this.checkIfYourKeyIsValid(key);
     try {
       if ((await this.keyRepository.count({ deviceId })) == 0) {
         await this.keyRepository.save({
