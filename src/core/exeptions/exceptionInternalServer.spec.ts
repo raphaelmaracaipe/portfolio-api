@@ -5,6 +5,7 @@ describe('exceptionBadRequest', () => {
     try {
       throw new ExceptionInternalServer(120);
     } catch (e) {
+      
       expect(120).toEqual(Number(e.response));
     }
   });
