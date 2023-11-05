@@ -20,7 +20,7 @@ Esta é uma API desenvolvida como parte do meu portfolio. O objetivo principal �
 ## Esquema das branchs
 Aqui é a estrutura das branchs para o repositório.
 <p align="center">
-  <img src="./docs/imgs/gitflow_completo.png" width="200" />
+  <img src="./docs/imgs/gitflow_completo.png" width="600" />
 </p>
 
 ## Tecnologias utilizadas
