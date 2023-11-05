@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Key } from '../../core/models/key.model';
 import { Codes } from '../../core/codes/codes';
 import { ExceptionBadRequest } from '../../core/exeptions/exceptionBadRequest';
 import { MongoRepository } from 'typeorm';
 import { RegexService } from '../../core/regex/regex.service';
-import { KEY_REGEX } from '../../core/regex/regex';
+import { REGEX_KEY } from '../../core/regex/regex';
 
 @Injectable()
 export class HandShakeService {
@@ -17,7 +17,7 @@ export class HandShakeService {
   ) {}
 
   async saveValue(key: string, deviceId: string) {
-    this.checkIfYourKeyIsValid(key);
+    await this.checkIfYourKeyIsValid(key);
     try {
       if ((await this.keyRepository.count({ deviceId })) == 0) {
         await this.keyRepository.save({
@@ -32,7 +32,7 @@ export class HandShakeService {
   }
 
   private async checkIfYourKeyIsValid(key: string) {
-    if (!(await this.regexService.check(KEY_REGEX, key))) {
+    if (!(await this.regexService.check(REGEX_KEY, key))) {
       throw new ExceptionBadRequest(this.codes.USER_KEY_INVALID);
     }
   }

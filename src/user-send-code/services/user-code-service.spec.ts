@@ -4,7 +4,7 @@ import { MongoRepository } from 'typeorm';
 import { User } from '../../core/models/user.model';
 import { UserCodeService } from './user-code-service.service';
 import { Token } from '../../core/models/token.model';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { Codes } from '../../core/codes/codes';
 import { Key } from '../../core/models/key.model';
 import { LbCryptoService } from '@app/lb-crypto';
@@ -19,7 +19,7 @@ describe('UserCodeService', () => {
   let keyRepository: MongoRepository<Key>;
 
   const userDTO: User = {
-    id: ObjectID('644d70b4573a660aa0ee65a4'),
+    id: new ObjectId('644d70b4573a660aa0ee65a4'),
     phone: '+5599999999',
     passphrase: 'AAAA',
     privateKey: 'BBBB',

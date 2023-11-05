@@ -24,10 +24,6 @@ import { RegexService } from './regex/regex.service';
   providers: [
     AuthService,
     ApiKeyStrategy,
-    CleanKeySchedule,
-    CleanKeyService,
-    CodesExpirationsSchedule,
-    CodesExpirationsService,
     DecryptedService,
     Codes,
     LbCryptoService,

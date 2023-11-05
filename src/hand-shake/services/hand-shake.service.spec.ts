@@ -5,7 +5,7 @@ import { Key } from 'readline';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Codes } from '../../core/codes/codes';
 import { RegexService } from '../../core/regex/regex.service';
-import { DEVICE_ID_REGEX, KEY_REGEX } from '../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_KEY } from '../../core/regex/regex';
 
 describe('HandShakeService', () => {
   let app: INestApplication;
@@ -38,8 +38,8 @@ describe('HandShakeService', () => {
       jest.spyOn(keyRepository, 'count').mockResolvedValue(0);
       jest.spyOn(keyRepository, 'save').mockImplementation(null);
 
-      const deviceID = regexService.generateRandom(DEVICE_ID_REGEX);
-      const key = regexService.generateRandom(KEY_REGEX);
+      const deviceID = regexService.generateRandom(REGEX_DEVICE_ID);
+      const key = regexService.generateRandom(REGEX_KEY);
 
       await handShakeService.saveValue(key, deviceID);
     } catch (e) {
@@ -51,8 +51,8 @@ describe('HandShakeService', () => {
     try {
       jest.spyOn(keyRepository, 'count').mockResolvedValue(1);
 
-      const deviceID = regexService.generateRandom(DEVICE_ID_REGEX);
-      const key = regexService.generateRandom(KEY_REGEX);
+      const deviceID = regexService.generateRandom(REGEX_DEVICE_ID);
+      const key = regexService.generateRandom(REGEX_KEY);
 
       await handShakeService.saveValue(key, deviceID);
     } catch (e) {

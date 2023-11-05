@@ -72,7 +72,7 @@ describe('UserSendCodeV1Controller', () => {
         mockResponse,
       );
 
-      expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+      expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK);
     });
 
     it('When happen error generic should show code 500 and message error', async () => {

@@ -17,6 +17,12 @@ Esta é uma API desenvolvida como parte do meu portfolio. O objetivo principal �
 - [**v1/users/valid** *(get)*:](./docs/user-valid-code.md "**v1/users/valid** *(get)*:") Realiza a verificação do código de validação para realizar a liberação do acesso.
 - [**v1/handshake** *(post)*:](./docs/handshake.md "**v1/handshake** *(post)*:") Recebe a chave de decriptografia dos dados enviado via body
 
+## Esquema das branchs
+Aqui é a estrutura das branchs para o repositório.
+<p align="center">
+  <img src="./docs/imgs/gitflow_completo.png" width="600" />
+</p>
+
 ## Tecnologias utilizadas
 
 A API foi desenvolvida usando as seguintes tecnologias:

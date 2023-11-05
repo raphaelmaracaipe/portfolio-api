@@ -1,33 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import * as crypto from 'crypto';
-import * as CryptoJS from 'crypto-js';
+import * as forge from 'node-forge';
 
 @Injectable()
 export class LbCryptoService {
-  generateCode = (min: number, max: number) => crypto.randomInt(min, max);
+  generateCode = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
 
   encryptAES(textPlain: any, key: string, iv: string): string {
-    const keyParse = CryptoJS.enc.Utf8.parse(key);
-    const ivPerse = CryptoJS.enc.Utf8.parse(iv.substring(0, 16));
-
-    const encrypted = CryptoJS.AES.encrypt(textPlain, keyParse, {
-      iv: ivPerse,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    });
-    return encrypted.toString();
+    const cipher = forge.cipher.createCipher('AES-CBC', forge.util.createBuffer(key));
+    cipher.start({ iv: forge.util.createBuffer(iv) });
+    cipher.update(forge.util.createBuffer(textPlain, 'utf8'));
+    cipher.finish();
+    return forge.util.encode64(cipher.output.getBytes());
   }
 
   decryptAES(textEncrypted: any, key: string, iv: string): string {
-    const keyParse = CryptoJS.enc.Utf8.parse(key);
-    const ivPerse = CryptoJS.enc.Utf8.parse(iv.substring(0, 16));
-
-    const decrypted = CryptoJS.AES.decrypt(textEncrypted, keyParse, {
-      iv: ivPerse,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    });
-
-    return decrypted.toString(CryptoJS.enc.Utf8);
+    const decipher = forge.cipher.createDecipher('AES-CBC', forge.util.createBuffer(key));
+    decipher.start({ iv: forge.util.createBuffer(iv) });
+    decipher.update(forge.util.createBuffer(forge.util.decode64(textEncrypted)));
+    decipher.finish();
+    return decipher.output.toString('utf8');
   }
 }

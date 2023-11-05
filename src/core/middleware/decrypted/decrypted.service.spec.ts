@@ -7,7 +7,7 @@ import { Codes } from '../../../core/codes/codes';
 import { LbCryptoService } from '@app/lb-crypto';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RegexService } from '../../../core/regex/regex.service';
-import { DEVICE_ID_REGEX } from '../../../core/regex/regex';
+import { REGEX_DEVICE_ID } from '../../../core/regex/regex';
 import config from '../../../config/config';
 import { Key } from '../../../core/models/key.model';
 
@@ -68,7 +68,7 @@ describe('DecryptedService', () => {
     try {
       const mockRequest: Request = {
         headers: {
-          device_id: regex.generateRandom(DEVICE_ID_REGEX),
+          device_id: regex.generateRandom(REGEX_DEVICE_ID),
           seed: process.env.IV_DEFAULT,
         },
       } as any;
@@ -84,7 +84,7 @@ describe('DecryptedService', () => {
     try {
       const mockRequest: Request = {
         headers: {
-          device_id: regex.generateRandom(DEVICE_ID_REGEX),
+          device_id: regex.generateRandom(REGEX_DEVICE_ID),
           seed: process.env.IV_DEFAULT,
           dev: 'true',
         },
@@ -102,7 +102,7 @@ describe('DecryptedService', () => {
       jest.spyOn(keyRepository, 'findOne').mockResolvedValue(null);
       const mockRequest: Request = {
         headers: {
-          device_id: regex.generateRandom(DEVICE_ID_REGEX),
+          device_id: regex.generateRandom(REGEX_DEVICE_ID),
           seed: process.env.IV_DEFAULT,
         },
         body: {
@@ -133,7 +133,7 @@ describe('DecryptedService', () => {
 
       const mockRequest: Request = {
         headers: {
-          device_id: regex.generateRandom(DEVICE_ID_REGEX),
+          device_id: regex.generateRandom(REGEX_DEVICE_ID),
           seed: process.env.IV_DEFAULT,
         },
         body: {
