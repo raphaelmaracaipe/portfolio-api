@@ -1,6 +1,6 @@
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
-@Entity('TokensOfAccess')
+@Entity('CodeToAllowAccess')
 export class Token {
   @ObjectIdColumn()
   id?: any;
