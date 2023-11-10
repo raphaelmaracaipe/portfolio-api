@@ -4,5 +4,4 @@ export interface Configuration {
   URL_CONNECTION_DB: string;
   IS_DEV: boolean;
   TIME_TO_VALIDATION_CODE: number;
-  API_KEYS: string;
 }

@@ -14,6 +14,7 @@ import { Codes } from './core/codes/codes';
 import { RegexService } from './core/regex/regex.service';
 import { DecryptedService } from './core/middleware/decrypted/decrypted.service';
 import { LbCryptoService } from '@app/lb-crypto';
+import { ApiKey } from './core/models/apiKey.model';
 
 @Module({
   imports: [
@@ -23,14 +24,17 @@ import { LbCryptoService } from '@app/lb-crypto';
       envFilePath: `envs/.${process.env.NODE_ENV}.env`,
       load: [config],
     }),
-    TypeOrmModule.forFeature([Key]),
+    TypeOrmModule.forFeature([
+      Key,
+      ApiKey
+    ]),
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url: process.env.URL_CONNECTION_DB,
       ssl: true,
       synchronize: true,
       autoLoadEntities: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     }),
     CoreModule,
     HandShakeModule,

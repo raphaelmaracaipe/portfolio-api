@@ -4,5 +4,4 @@ export default () => ({
   urlConnectionDB: process.env.URL_CONNECTION_DB,
   isDev: process.env.IS_DEV == 'true',
   timeToValidationCode: parseInt(process.env.TIME_TO_VALIDATION_CODE),
-  apiKeys: process.env.API_KEYS,
 });
