@@ -1,0 +1,278 @@
+{
+	"info": {
+		"_postman_id": "7f9fc8dc-ecae-4251-8aa0-b6c5af015cd6",
+		"name": "Porfolio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6052989"
+	},
+	"item": [
+		{
+			"name": "v1 - Handshake",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "V!QFCVVd09KWbRd@a7TZF-A1W8d!aSZ5?2@B2!#f",
+						"type": "text"
+					},
+					{
+						"key": "device_id",
+						"value": "bEV2fPGKf12SE8WaDQeU",
+						"type": "text"
+					},
+					{
+						"key": "dev",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"key\": \"c8WZ9ecNEZf7VB6M\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/handshake",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"handshake"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "v1 - Send Code",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "dev",
+						"value": "true",
+						"type": "text"
+					},
+					{
+						"key": "device_id",
+						"value": "bEV2fPGKf12SE8WaDQeU",
+						"type": "text"
+					},
+					{
+						"key": "x-api-key",
+						"value": "V!QFCVVd09KWbRd@a7TZF-A1W8d!aSZ5?2@B2!#f",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone\": \"+559999\",\r\n    \"deviceId\": \"bEV2fPGKf12SE8WaDQeU\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/users/code",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users",
+						"code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "v1 - Validation Code",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "V!QFCVVd09KWbRd@a7TZF-A1W8d!aSZ5?2@B2!#f",
+						"type": "text"
+					},
+					{
+						"key": "device_id",
+						"value": "bEV2fPGKf12SE8WaDQeU",
+						"type": "text"
+					},
+					{
+						"key": "dev",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone\": \"5561982993098\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/users/valid?code=556983",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users",
+						"valid"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "556983"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "v1 - Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjU1OTk5OSIsInR5cGUiOjEwMDIsImlhdCI6MTcwMDQyNjY5NiwiZXhwIjoxNzAwNDI4NDk2fQ.mi-DTeFcWGlF5-shsSnwAhcEwQCmcxA0GCddv0DvaEABloEgdk5_ZhwiUlFI20-j5_JXAhUeVnryjZXt9nNjfoFSuK4QbZjzh3xrH2FvV2LP6LWNShfB_IHYIB1G9FFylQOZHcdFhx0W3waUTYjY-294Z9Poy_yZQwiNkP2T1tdI0QWeh1ld6XABcrKo8F6N7JnOT536HgmKpsZzV25DO_ze5Gxt5rAl8m5KQgY-KFB_8BWeZupGiuTNqxScYTQXbBhZSrDKKLgdL_CKNVbLW_65NfnyLbhv8vhF5jX1jKn9zaMKG0Yf5CRnUdX_kHDqnBBOMivZHsul4mZarCDNjwDHuEZ886LHQkWUUUkzbXTls0oScKFm78F_Z-cSUn3_isTkjUE-ls0_bpaYxoXPSr95cVqe7uF85yDPLDnSuG_ISyPopKPjf33vrVf0ybayYI75mQu0zJLxxmvrfFbfx8H8A8lrTKU6TQgFU5993YpP3Vrntm-2XNGjczS4Sh8eFbORoqjyb3EC9f9WOo0jdd9GhTyWqqlkYGdI4K9mqywyQAXVSMDVeAVBltWD0pFlmuHZTGlx3ekDvzhhc37JcBk0A0KN9BgpyzXa-26XL7mlZuojUBniKT-1rwU0lbwSCPfIXLGcASDK00UHzJ_gdDfI_1UASvVvuzl6fA2aVA4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "V!QFCVVd09KWbRd@a7TZF-A1W8d!aSZ5?2@B2!#f",
+						"type": "text"
+					},
+					{
+						"key": "device_id",
+						"value": "bEV2fPGKf12SE8WaDQeU",
+						"type": "text"
+					},
+					{
+						"key": "dev",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Raphael\",\r\n    \"photo\": \"==A\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/users/profile",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "v1 - Token update",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "V!QFCVVd09KWbRd@a7TZF-A1W8d!aSZ5?2@B2!#f",
+						"type": "text"
+					},
+					{
+						"key": "device_id",
+						"value": "bEV2fPGKf12SE8WaDQeU",
+						"type": "text"
+					},
+					{
+						"key": "dev",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjU1OTk5OSIsInR5cGUiOjEwMDEsImlhdCI6MTcwMDQ0NDcxNX0.lxXzbigI-Ym_NyraUNCSdUhI3I9KWG5ex2dN_X3STtEFP7z1X6ewUtw0-irEoRYwPU-bXkItPkeBJUVHvqjFj7EDzbRpjSNev_aMOA2cpyMlvvlzWMqpoLEtUPPnkqGueV8T4ofDQLRpdXsSK4cDSnlyvZ9XTWtxkqxojec6GmHwGW2owbSGl_aBM96W1NCKQaCQ82T_BZCouZ81h3JFEwkFg6UZ525pY7v4ujDjm8LuOWd1CtQ1qlptTdMjOskljQBD0ssw5Gv8e87V-1R3HnvLPpRgp5gz4xzFYse3iQDqgLsWWIv4X6qgALbO1AZNE3KlXZApdrYfB4Ff3HkcXw5l2GWnCn7KCcyKSHnSUQfSTsDzEyu81WovV9bLa-05BphG3IysxxQhI0YFC-_1YbTtrB-Tr_indNWr0Z7HyyS4CXzjCij9-_2B263v4GNfsadwdhx5sYg9d1ySr4rDi7RRl0dCyPgs8xbxcp90MENwEUtCLqXPtHUHNAuFLR34_thmQkXd4UTdPOaCSfSI76xG9KjNpt6FowM__oUpLYA1CWxItUkCmuS0SLnvRNiErHSlE3bW9pmupRxXB0BCcuPFpcUExhPI4Omglg3cRFFOpFvVbG9648B5ByXN1QrGJsaoTYHKZGM9rb01Ns-wSrnThc2txBP6qAWVRbss8QQ\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/tokens/refresh",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"tokens",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		}
+	]
+}
