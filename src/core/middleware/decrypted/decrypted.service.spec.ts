@@ -7,7 +7,7 @@ import { Codes } from '../../../core/codes/codes';
 import { LbCryptoService } from '@app/lb-crypto';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RegexService } from '../../../core/regex/regex.service';
-import { REGEX_DEVICE_ID } from '../../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_SEED } from '../../../core/regex/regex';
 import config from '../../../config/config';
 import { Key } from '../../../core/models/key.model';
 
@@ -16,6 +16,7 @@ describe('DecryptedService', () => {
   let decryptedService: DecryptedService;
   let regex: RegexService;
   let keyRepository: MongoRepository<Key>;
+  let crypto: LbCryptoService;
 
   beforeEach(async () => {
     const modularRef: TestingModule = await Test.createTestingModule({
@@ -46,15 +47,18 @@ describe('DecryptedService', () => {
     decryptedService = await modularRef.resolve(DecryptedService);
     keyRepository = modularRef.get<MongoRepository<Key>>('KeyRepository');
     regex = await modularRef.resolve(RegexService);
+    crypto = await modularRef.resolve(LbCryptoService);
   });
 
   const mockNext = () => undefined;
 
   it('when send device Id invalid', async () => {
+    const seed = regex.generateRandom(REGEX_SEED)
     try {
       const mockRequest: Request = {
         headers: {
           device_id: 'AAA',
+          seed
         },
       } as any;
 
@@ -100,6 +104,8 @@ describe('DecryptedService', () => {
   it('when send device Id valid but not exist key registered', async () => {
     try {
       jest.spyOn(keyRepository, 'findOne').mockResolvedValue(null);
+      jest.spyOn(crypto, 'decryptAES').mockImplementation(() => 'RF22SW76BV83EDH8');
+
       const mockRequest: Request = {
         headers: {
           device_id: regex.generateRandom(REGEX_DEVICE_ID),
@@ -108,7 +114,7 @@ describe('DecryptedService', () => {
         body: {
           dataOfBodyEncrypted: {
             data: {
-              test: 'a',
+              test: encodeURIComponent('=/a'),
             },
           },
         },
@@ -139,7 +145,7 @@ describe('DecryptedService', () => {
         body: {
           dataOfBodyEncrypted: {
             data: {
-              test: 'a',
+              test: 'a1',
             },
           },
         },

@@ -51,7 +51,7 @@ export class DecryptedService {
   ) {
     try {
       const { device_id, seed } = req.headers;
-      const dataOfBodyEncrypted: { data: any } = req.body;
+      const dataOfBodyEncrypted: { data: any } = req.body.dataOfBodyEncrypted;
 
       let key = this.key;
       const keyRegistered = await this.keyRepository.findOne({
@@ -63,10 +63,9 @@ export class DecryptedService {
       }
 
       const { data } = dataOfBodyEncrypted
-
       if (data) {
         const seedDecryptedAndValid = await this.decryptSeedAndValid(seed.toString());
-        const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
+        const bodyDecodead = await this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
 
         if(bodyDecodead == '') {
           req.body = '';          
