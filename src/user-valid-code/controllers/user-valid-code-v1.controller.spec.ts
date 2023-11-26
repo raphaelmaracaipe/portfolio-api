@@ -10,7 +10,7 @@ import { LbBase64Service } from '@app/lb-base64';
 import { LbJwtService } from '@app/lb-jwt';
 import { LbKeysService } from '@app/lb-keys';
 import { LbCryptoService } from '@app/lb-crypto';
-import { Configuration } from 'src/config/configuration';
+import { Configuration } from '../../config/configuration';
 import { ConfigService } from '@nestjs/config';
 
 describe('UserValidCodeV1Controller', () => {
@@ -26,6 +26,7 @@ describe('UserValidCodeV1Controller', () => {
   const mockRequest: Request = {
     headers: {
       dev: 'true',
+      device_id: 'bEV2fPGKf12SE8WaDQeU'
     },
   } as any;
 

@@ -8,7 +8,7 @@ export class UserValidCodeV1Controller {
   constructor(
     private readonly validCodeService: ValidCodeService,
     private responseEncrypted: ResponseEncrypted,
-  ) {}
+  ) { }
 
   @Get('valid')
   async valid(
@@ -16,7 +16,8 @@ export class UserValidCodeV1Controller {
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<Response> {
-    const tokens = await this.validCodeService.valid(parseInt(code));
+    const { device_id } = req.headers;
+    const tokens = await this.validCodeService.valid(parseInt(code), device_id.toString());
 
     return this.responseEncrypted.encrypted({
       data: tokens,
