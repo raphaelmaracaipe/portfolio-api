@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Configuration } from 'src/config/configuration';
 import { MongoRepository } from 'typeorm';
 import { apiKeyTypeList } from './auth.enum';
 import { ApiKey } from '../models/apiKey.model';
@@ -13,13 +11,16 @@ export class AuthService {
   constructor(
     @InjectRepository(ApiKey)
     private readonly apiKeysRepository: MongoRepository<ApiKey>,
-    private readonly regex: RegexService,
-    private readonly configService: ConfigService<Configuration>
+    private readonly regex: RegexService
   ) { }
 
   async validateApiKey(apikeyHeader: any): Promise<string> {
     const apiKeys = await this.checkIfExistsTokensRegistered();
-    return apiKeys.find((apikey) => apikey.apiKey == String(apikeyHeader)).apiKey
+    const apikeyFound: ApiKey = apiKeys.find((apikey) => apikey.apiKey == String(apikeyHeader))
+    if(apikeyFound) {
+      return apikeyFound.apiKey
+    }
+    return '';
   }
 
   private async checkIfExistsTokensRegistered(): Promise<ApiKey[]> {
