@@ -15,14 +15,6 @@ import { RegexService } from './core/regex/regex.service';
 import { DecryptedService } from './core/middleware/decrypted/decrypted.service';
 import { LbCryptoService } from '@app/lb-crypto';
 import { ApiKey } from './core/models/apiKey.model';
-import { UserProfileModule } from './user-profile/user-profile.module';
-import { TokenValidMiddleware } from './core/middleware/token/token-valid.middleware';
-import { UserProfileV1Controller } from './user-profile/controllers/user-profile-v1.controller';
-import { TokenValidService } from './core/middleware/token/token-valid.service';
-import { User } from './core/models/user.model';
-import { LbJwtModule, LbJwtService } from '@app/lb-jwt';
-import { LbBase64Module, LbBase64Service } from '@app/lb-base64';
-import { TokensModule } from './tokens/tokens.module';
 
 @Module({
   imports: [
@@ -34,8 +26,7 @@ import { TokensModule } from './tokens/tokens.module';
     }),
     TypeOrmModule.forFeature([
       Key,
-      ApiKey,
-      User
+      ApiKey
     ]),
     TypeOrmModule.forRoot({
       type: 'mongodb',
@@ -49,10 +40,6 @@ import { TokensModule } from './tokens/tokens.module';
     HandShakeModule,
     UserValidCodeModule,
     UserSendCodeModule,
-    UserProfileModule,
-    TokensModule,
-    LbJwtModule,
-    LbBase64Module
   ],
   providers: [
     AuthService,
@@ -60,15 +47,11 @@ import { TokensModule } from './tokens/tokens.module';
     DecryptedService,
     LbCryptoService,
     RegexService,
-    TokenValidService,
   ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes('');
     consumer.apply(DecryptedMiddleware).forRoutes('');
-    consumer.apply(TokenValidMiddleware).forRoutes(
-      UserProfileV1Controller
-    );
   }
 }
