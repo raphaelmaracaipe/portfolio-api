@@ -9,6 +9,7 @@ import { Codes } from '../../core/codes/codes';
 import { ExceptionBadRequest } from '../../core/exeptions/exceptionBadRequest';
 import { Token } from '../../core/models/token.model';
 import { User } from '../../core/models/user.model';
+import { TOKEN_TYPE_REFRESH, TOKEN_TYPE_ACCESS } from '../../core/tokens/tokens.const';
 
 @Injectable()
 export class ValidCodeService {
@@ -25,6 +26,7 @@ export class ValidCodeService {
 
   async valid(
     code: number,
+    deviceId: string,
   ): Promise<{ refreshToken: string; accessToken: string }> {
     await this.checkIfIsCodeValid(code);
     const userOfDB = await this.checkInDB(code);
@@ -42,6 +44,7 @@ export class ValidCodeService {
       { _id: id },
       {
         $set: {
+          deviceId: deviceId,
           publicKey: this.base64.encode(publicKey),
           privateKey: this.base64.encode(privateKey),
           passphrase: key,
@@ -58,12 +61,12 @@ export class ValidCodeService {
       await this.keys.generatePrivateAndPublicKey();
 
     const refreshToken = this.jwt.generate(
-      { phone, type: 1001 },
+      { phone, type: TOKEN_TYPE_REFRESH },
       privateKey,
       key,
     );
     const accessToken = this.jwt.generate(
-      { phone, type: 1002 },
+      { phone, type: TOKEN_TYPE_ACCESS },
       privateKey,
       key,
       30 * 60,
