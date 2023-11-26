@@ -11,11 +11,11 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-#envs
-/envs
-
 # OS
 .DS_Store
+
+#envs
+/envs
 
 # Tests
 /coverage
