@@ -65,10 +65,10 @@ export class DecryptedService {
       const { data } = dataOfBodyEncrypted
       if (data) {
         const seedDecryptedAndValid = await this.decryptSeedAndValid(seed.toString());
-        const bodyDecodead = await this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
+        const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
 
-        if(bodyDecodead == '') {
-          req.body = '';          
+        if (bodyDecodead == '') {
+          req.body = '';
         } else {
           req.body = JSON.parse(bodyDecodead);
         }
@@ -85,7 +85,7 @@ export class DecryptedService {
   }
 
   private async decryptSeedAndValid(seed: string): Promise<string> {
-    const seedDecrypted = await this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
+    const seedDecrypted = this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
     if (!this.regex.check(REGEX_SEED, seedDecrypted)) {
       throw new ExceptionBadRequest(this.codes.SEED_INVALID);
     }

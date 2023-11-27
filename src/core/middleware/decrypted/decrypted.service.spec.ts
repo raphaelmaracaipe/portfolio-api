@@ -104,7 +104,7 @@ describe('DecryptedService', () => {
   it('when send device Id valid but not exist key registered', async () => {
     try {
       jest.spyOn(keyRepository, 'findOne').mockResolvedValue(null);
-      jest.spyOn(crypto, 'decryptAES').mockImplementation(() => 'RF22SW76BV83EDH8');
+      jest.spyOn(crypto, 'decryptAES').mockReturnValue('RF22SW76BV83EDH8');
 
       const mockRequest: Request = {
         headers: {
@@ -114,7 +114,7 @@ describe('DecryptedService', () => {
         body: {
           dataOfBodyEncrypted: {
             data: {
-              test: encodeURIComponent('=/a'),
+              test: encodeURIComponent('a'),
             },
           },
         },
@@ -129,6 +129,8 @@ describe('DecryptedService', () => {
 
   it('when send device Id valid but not exist key registered', async () => {
     try {
+      jest.spyOn(crypto, 'decryptAES').mockImplementationOnce(() => 'RF22SW76BV83EDH8');
+      jest.spyOn(crypto, 'decryptAES').mockImplementationOnce(() => JSON.stringify({ 'test': 'test of body' }));
       jest.spyOn(keyRepository, 'findOne').mockResolvedValue({
         key: String(process.env.IV_DEFAULT),
         deviceId: 'a',
@@ -137,6 +139,7 @@ describe('DecryptedService', () => {
         updatedAt: 0,
       });
 
+      const data = JSON.stringify({ test: 'a1' })
       const mockRequest: Request = {
         headers: {
           device_id: regex.generateRandom(REGEX_DEVICE_ID),
@@ -144,10 +147,8 @@ describe('DecryptedService', () => {
         },
         body: {
           dataOfBodyEncrypted: {
-            data: {
-              test: 'a1',
-            },
-          },
+            data: encodeURIComponent(data),
+          }
         },
       } as any;
 
@@ -157,4 +158,9 @@ describe('DecryptedService', () => {
       expect(true).toEqual(false);
     }
   });
+
+  afterEach(async () => {
+    await app.close();
+  });
+
 });
