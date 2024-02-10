@@ -4,4 +4,5 @@ export interface Configuration {
   URL_CONNECTION_DB: string;
   IS_DEV: boolean;
   TIME_TO_VALIDATION_CODE: number;
+  TIME_EXPIRED_OF_TOKEN: number;
 }
