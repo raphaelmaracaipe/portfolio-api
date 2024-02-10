@@ -1,4 +1,4 @@
-import { Controller, Post, Res, HttpStatus, Body, Req } from '@nestjs/common';
+import { Controller, Post, Res, HttpStatus, Body, Req, Logger } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { User as UserInterface } from '../models/user.interface';
 import { UserCodeService } from '../services/user-code-service.service';
@@ -6,10 +6,13 @@ import { ResponseEncrypted } from '../../core/response/response.encrypted';
 
 @Controller('v1/users')
 export class UserSendCodeV1Controller {
+
+  private logger = new Logger(UserSendCodeV1Controller.name);
+
   constructor(
     private userCodeService: UserCodeService,
     private responseEncrypted: ResponseEncrypted,
-  ) {}
+  ) { }
 
   @Post('code')
   async create(
@@ -17,6 +20,7 @@ export class UserSendCodeV1Controller {
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<Response> {
+    this.logger.log("Call endpoint: (POST) v1/users/code");
     const { phone } = userReceived;
     const { device_id } = req.headers;
 

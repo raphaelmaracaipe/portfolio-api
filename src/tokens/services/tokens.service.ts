@@ -9,9 +9,12 @@ import { User } from "../../core/models/user.model";
 import { TOKEN_TYPE_REFRESH, TOKEN_TYPE_ACCESS } from "../../core/tokens/tokens.const";
 import { Token } from "src/tokens/models/token.interface";
 import { MongoRepository } from "typeorm";
+import { ConfigService } from "@nestjs/config";
+import { Configuration } from '../../config/configuration';
 
 @Injectable()
 export class TokensServices {
+  private timeExpiredOfToken: number = this.configService.get('TIME_EXPIRED_OF_TOKEN');
 
   constructor(
     @InjectRepository(User)
@@ -19,7 +22,8 @@ export class TokensServices {
     private readonly jwt: LbJwtService,
     private readonly codes: Codes,
     private readonly keys: LbKeysService,
-    private readonly base64: LbBase64Service
+    private readonly base64: LbBase64Service,
+    private readonly configService: ConfigService<Configuration>,
   ) { }
 
   async valid(deviceId: string, token: Token) {
@@ -42,7 +46,7 @@ export class TokensServices {
       { phone, type: TOKEN_TYPE_ACCESS },
       privateKey,
       key,
-      30 * 60,
+      this.timeExpiredOfToken,
     );
 
     return { refreshToken, accessToken, privateKey, publicKey, key };

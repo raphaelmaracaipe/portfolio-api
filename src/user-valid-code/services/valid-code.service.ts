@@ -10,9 +10,13 @@ import { ExceptionBadRequest } from '../../core/exeptions/exceptionBadRequest';
 import { Token } from '../../core/models/token.model';
 import { User } from '../../core/models/user.model';
 import { TOKEN_TYPE_REFRESH, TOKEN_TYPE_ACCESS } from '../../core/tokens/tokens.const';
+import { ConfigService } from '@nestjs/config';
+import { Configuration } from '../../config/configuration';
 
 @Injectable()
 export class ValidCodeService {
+  private timeExpiredOfToken: number = this.configService.get('TIME_EXPIRED_OF_TOKEN');
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: MongoRepository<User>,
@@ -22,6 +26,7 @@ export class ValidCodeService {
     private readonly jwt: LbJwtService,
     private readonly base64: LbBase64Service,
     private readonly codes: Codes,
+    private readonly configService: ConfigService<Configuration>,
   ) { }
 
   async valid(
@@ -69,7 +74,7 @@ export class ValidCodeService {
       { phone, type: TOKEN_TYPE_ACCESS },
       privateKey,
       key,
-      30 * 60,
+      this.timeExpiredOfToken,
     );
 
     return { refreshToken, accessToken, privateKey, publicKey, key };

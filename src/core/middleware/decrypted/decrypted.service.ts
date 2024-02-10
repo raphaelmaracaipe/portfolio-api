@@ -9,8 +9,10 @@ import { Codes } from '../../../core/codes/codes';
 import { ExceptionBadRequest } from '../../../core/exeptions/exceptionBadRequest';
 import { RegexService } from '../../../core/regex/regex.service';
 import { REGEX_DEVICE_ID, REGEX_SEED } from '../../../core/regex/regex';
+import { Logger } from '@nestjs/common';
 
 export class DecryptedService {
+  private logger = new Logger(DecryptedService.name);
   private key = this.configService.get('KEY_DEFAULT');
   private iv = this.configService.get('IV_DEFAULT');
   private deviceIdDecoded = ""
@@ -51,7 +53,7 @@ export class DecryptedService {
   ) {
     try {
       const { device_id, seed } = req.headers;
-      const dataOfBodyEncrypted: { data: any } = req.body.dataOfBodyEncrypted;
+      const dataOfBodyEncrypted: { data: any } = req.body;
 
       let key = this.key;
       const keyRegistered = await this.keyRepository.findOne({
@@ -66,6 +68,7 @@ export class DecryptedService {
       if (data) {
         const seedDecryptedAndValid = await this.decryptSeedAndValid(seed.toString());
         const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
+        this.logger.debug(`bodyDecodead: ${bodyDecodead}`);
 
         if (bodyDecodead == '') {
           req.body = '';
@@ -73,6 +76,7 @@ export class DecryptedService {
           req.body = JSON.parse(bodyDecodead);
         }
 
+        this.logger.debug(`body: ${req.body}`);
         req.headers = {
           ...req.headers,
           device_id: this.deviceIdDecoded

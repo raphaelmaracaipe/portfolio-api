@@ -112,10 +112,8 @@ describe('DecryptedService', () => {
           seed: process.env.IV_DEFAULT,
         },
         body: {
-          dataOfBodyEncrypted: {
-            data: {
-              test: encodeURIComponent('a'),
-            },
+          data: {
+            test: encodeURIComponent('a'),
           },
         },
       } as any;
@@ -146,9 +144,7 @@ describe('DecryptedService', () => {
           seed: process.env.IV_DEFAULT,
         },
         body: {
-          dataOfBodyEncrypted: {
-            data: encodeURIComponent(data),
-          }
+          data: encodeURIComponent(data),
         },
       } as any;
 
