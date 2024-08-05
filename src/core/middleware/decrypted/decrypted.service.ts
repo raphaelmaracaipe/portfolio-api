@@ -59,6 +59,7 @@ export class DecryptedService {
       const keyRegistered = await this.keyRepository.findOne({
         where: { deviceId: device_id },
       });
+
       if (keyRegistered) {
         key = keyRegistered.key;
       }
