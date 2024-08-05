@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { User, User as UserInterface } from '../models/user.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
@@ -12,6 +12,7 @@ import { Configuration } from 'src/config/configuration';
 
 @Injectable()
 export class UserCodeService {
+  private logger = new Logger(UserCodeService.name);
   private isDev: boolean = this.configService.get('IS_DEV');
   private timeToValidationCode: number = this.configService.get(
     'TIME_TO_VALIDATION_CODE',
@@ -27,12 +28,13 @@ export class UserCodeService {
     private readonly crypto: LbCryptoService,
     private readonly codes: Codes,
     private readonly configService: ConfigService<Configuration>,
-  ) {}
+  ) { }
 
   async generate(user: UserInterface): Promise<void> {
     const { phone } = user;
     this.validateNumberPhone(phone);
     if (!user.deviceId) {
+      this.logger.error('Device id invalid');
       throw new ExceptionBadRequest(this.codes.USER_SEND_DEVICE_ID_INVALID);
     }
 
@@ -40,6 +42,7 @@ export class UserCodeService {
       const idOfUserSavedInDb = await this.saveDataInDB(user);
       await this.generateKeyToValidationAccess(idOfUserSavedInDb);
     } catch (err) {
+      this.logger.error(err);
       throw new ExceptionBadRequest(this.codes.ERROR_GENERAL);
     }
   }
