@@ -6,7 +6,7 @@ import { CleanKeyService } from './clean_keys.service';
 export class CleanKeySchedule {
   constructor(private readonly cleanKeyService: CleanKeyService) {}
 
-  @Cron('* * 2 * * *')
+  @Cron('20 * * * * *')
   async handleCron() {
     await this.cleanKeyService.clean();
   }

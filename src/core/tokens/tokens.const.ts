@@ -1,0 +1,2 @@
+export const TOKEN_TYPE_ACCESS = 1002
+export const TOKEN_TYPE_REFRESH = 1001

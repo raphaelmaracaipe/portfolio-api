@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Response } from 'express';
 import { MongoRepository } from 'typeorm';
@@ -10,6 +10,7 @@ import { Configuration } from 'src/config/configuration';
 
 @Injectable()
 export class ResponseEncrypted {
+  private logger = new Logger(ResponseEncrypted.name);
   private key = this.configService.get('KEY_DEFAULT');
   private iv = this.configService.get('IV_DEFAULT');
 
@@ -33,6 +34,7 @@ export class ResponseEncrypted {
 
     try {
       if (dev && dev === 'true') {
+        this.logger.log('is mode dev, i not encrypted datas');
         return data;
       }
 
@@ -41,6 +43,8 @@ export class ResponseEncrypted {
 
       const seedDecryted = await this.decryptSeed(seed.toString());
       if ((!iv || iv == '') && (!iResponse.key || iResponse.key == '')) {
+        this.logger.log('Not exist key and seed sended, i want use default keys');
+
         const { device_id } = request.headers;
         const { key } = await this.keyRepository.findOne({
           where: { deviceId: device_id.toString() },
@@ -53,6 +57,7 @@ export class ResponseEncrypted {
           seedDecryted,
         );
       } else {
+        this.logger.log('Seed and key received');
         dataEncrypted = this.crypto.encryptAES(
           this.checkData(data),
           iResponse.key,
