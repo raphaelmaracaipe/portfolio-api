@@ -9,9 +9,14 @@ import { Codes } from '../../core/codes/codes';
 import { ExceptionBadRequest } from '../../core/exeptions/exceptionBadRequest';
 import { Token } from '../../core/models/token.model';
 import { User } from '../../core/models/user.model';
+import { TOKEN_TYPE_REFRESH, TOKEN_TYPE_ACCESS } from '../../core/tokens/tokens.const';
+import { ConfigService } from '@nestjs/config';
+import { Configuration } from '../../config/configuration';
 
 @Injectable()
 export class ValidCodeService {
+  private timeExpiredOfToken: number = this.configService.get('TIME_EXPIRED_OF_TOKEN');
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: MongoRepository<User>,
@@ -21,10 +26,12 @@ export class ValidCodeService {
     private readonly jwt: LbJwtService,
     private readonly base64: LbBase64Service,
     private readonly codes: Codes,
+    private readonly configService: ConfigService<Configuration>,
   ) { }
 
   async valid(
     code: number,
+    deviceId: string,
   ): Promise<{ refreshToken: string; accessToken: string }> {
     await this.checkIfIsCodeValid(code);
     const userOfDB = await this.checkInDB(code);
@@ -42,6 +49,7 @@ export class ValidCodeService {
       { _id: id },
       {
         $set: {
+          deviceId: deviceId,
           publicKey: this.base64.encode(publicKey),
           privateKey: this.base64.encode(privateKey),
           passphrase: key,
@@ -58,15 +66,15 @@ export class ValidCodeService {
       await this.keys.generatePrivateAndPublicKey();
 
     const refreshToken = this.jwt.generate(
-      { phone, type: 1001 },
+      { phone, type: TOKEN_TYPE_REFRESH },
       privateKey,
       key,
     );
     const accessToken = this.jwt.generate(
-      { phone, type: 1002 },
+      { phone, type: TOKEN_TYPE_ACCESS },
       privateKey,
       key,
-      30 * 60,
+      this.timeExpiredOfToken,
     );
 
     return { refreshToken, accessToken, privateKey, publicKey, key };

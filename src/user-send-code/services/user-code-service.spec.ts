@@ -21,6 +21,9 @@ describe('UserCodeService', () => {
   const userDTO: User = {
     id: new ObjectId('644d70b4573a660aa0ee65a4'),
     phone: '+5599999999',
+    name: 'test',
+    photo: '=AA',
+    deviceId: 'bEV2fPGKf12SE8WaDQeU',
     passphrase: 'AAAA',
     privateKey: 'BBBB',
     publicKey: 'CCCC',

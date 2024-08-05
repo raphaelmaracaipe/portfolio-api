@@ -20,6 +20,9 @@ describe('ValidCodeService', () => {
   const userDTO: User = {
     id: new ObjectId('644d70b4573a660aa0ee65a4'),
     phone: '+5599999999',
+    name: 'test',
+    photo: '==aa',
+    deviceId: 'a',
     passphrase: 'AAAA',
     privateKey: 'BBBB',
     publicKey: 'CCCC',
@@ -71,7 +74,7 @@ describe('ValidCodeService', () => {
 
   it('Send code invalid should return error', async () => {
     try {
-      await validCodeService.valid(parseInt('123A45'));
+      await validCodeService.valid(parseInt('123A45'), 'bEV2fPGKf12SE8WaDQeU');
       expect(true).toEqual(false);
     } catch (err) {
       const { message } = err;
@@ -88,7 +91,7 @@ describe('ValidCodeService', () => {
     jest.spyOn(tokenRepository, 'deleteMany').mockImplementationOnce(null);
 
     try {
-      await validCodeService.valid(123456);
+      await validCodeService.valid(123456, 'bEV2fPGKf12SE8WaDQeU');
     } catch (err) {
       const { message } = err;
       expect('Exception Bad Request').toEqual(message);
@@ -104,7 +107,7 @@ describe('ValidCodeService', () => {
     jest.spyOn(tokenRepository, 'findOne').mockResolvedValue(tokenDTO);
     jest.spyOn(tokenRepository, 'deleteMany').mockImplementationOnce(null);
 
-    const refreshToken = await validCodeService.valid(123456);
+    const refreshToken = await validCodeService.valid(123456, 'bEV2fPGKf12SE8WaDQeU');
     expect(refreshToken).not.toEqual('');
   });
 });

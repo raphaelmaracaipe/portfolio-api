@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Logger, Post, Req, Res } from '@nestjs/common';
 import { Code } from '../models/code.interface';
 import { Response, Request } from 'express';
 import { HandShakeService } from '../services/hand-shake.service';
@@ -10,6 +10,7 @@ import { Configuration } from '../../config/configuration';
 export class HandShakeV1Controller {
   private key = this.configService.get('KEY_DEFAULT');
   private iv = this.configService.get('IV_DEFAULT');
+  private logger = new Logger(HandShakeV1Controller.name);
 
   constructor(
     private readonly handShakeService: HandShakeService,
@@ -23,6 +24,7 @@ export class HandShakeV1Controller {
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<Response> {
+    this.logger.log("Call endpoint: (POST) v1/handshake");
     const { device_id } = req.headers;
     const { key } = codeBody;
 
