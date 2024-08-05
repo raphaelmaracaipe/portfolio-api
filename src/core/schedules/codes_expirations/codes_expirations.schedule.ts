@@ -6,7 +6,7 @@ import { CodesExpirationsService } from './codes_expirations.service';
 export class CodesExpirationsSchedule {
   constructor(private readonly codesServices: CodesExpirationsService) {}
 
-  @Cron('1 * * * * *')
+  @Cron('10 * * * * *')
   async handleCron() {
     await this.codesServices.valid();
   }

@@ -9,8 +9,10 @@ import { Codes } from '../../../core/codes/codes';
 import { ExceptionBadRequest } from '../../../core/exeptions/exceptionBadRequest';
 import { RegexService } from '../../../core/regex/regex.service';
 import { REGEX_DEVICE_ID, REGEX_SEED } from '../../../core/regex/regex';
+import { Logger } from '@nestjs/common';
 
 export class DecryptedService {
+  private logger = new Logger(DecryptedService.name);
   private key = this.configService.get('KEY_DEFAULT');
   private iv = this.configService.get('IV_DEFAULT');
   private deviceIdDecoded = ""
@@ -62,17 +64,18 @@ export class DecryptedService {
       }
 
       const { data } = dataOfBodyEncrypted
-
       if (data) {
         const seedDecryptedAndValid = await this.decryptSeedAndValid(seed.toString());
         const bodyDecodead = this.crypto.decryptAES(this.getDataBody(data), key, seedDecryptedAndValid)
+        this.logger.debug(`bodyDecodead: ${bodyDecodead}`);
 
-        if(bodyDecodead == '') {
-          req.body = '';          
+        if (bodyDecodead == '') {
+          req.body = '';
         } else {
           req.body = JSON.parse(bodyDecodead);
         }
 
+        this.logger.debug(`body: ${req.body}`);
         req.headers = {
           ...req.headers,
           device_id: this.deviceIdDecoded
@@ -85,7 +88,7 @@ export class DecryptedService {
   }
 
   private async decryptSeedAndValid(seed: string): Promise<string> {
-    const seedDecrypted = await this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
+    const seedDecrypted = this.crypto.decryptAES(decodeURIComponent(seed), this.key, this.iv);
     if (!this.regex.check(REGEX_SEED, seedDecrypted)) {
       throw new ExceptionBadRequest(this.codes.SEED_INVALID);
     }
