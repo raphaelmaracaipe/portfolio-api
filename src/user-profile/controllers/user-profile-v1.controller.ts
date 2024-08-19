@@ -1,8 +1,9 @@
-import { Body, Controller, HttpStatus, Logger, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Logger, Post, Req, Res } from "@nestjs/common";
 import { Response, Request } from 'express';
 import { Profile } from "../models/profile.interface";
-import { ProfileService } from "../services/profie.service";
 import { ResponseEncrypted } from "../../core/response/response.encrypted";
+import { ProfileInsertService } from "../services/profie-insert.service";
+import { ProfileSavedService } from "../services/profile-saved.service";
 
 @Controller('v1/users')
 export class UserProfileV1Controller {
@@ -10,7 +11,8 @@ export class UserProfileV1Controller {
   private logger = new Logger(UserProfileV1Controller.name);
 
   constructor(
-    private readonly profileService: ProfileService,
+    private readonly profileInsertService: ProfileInsertService,
+    private readonly profileSavedService: ProfileSavedService,
     private readonly responseEncrypted: ResponseEncrypted
   ) { }
 
@@ -22,9 +24,26 @@ export class UserProfileV1Controller {
   ) {
     this.logger.log("Call endpoint: (POST) v1/users/profile");
     const { device_id } = req.headers
-    await this.profileService.insert(device_id.toString(), profile)
+    await this.profileInsertService.insert(device_id.toString(), profile)
 
     return await this.responseEncrypted.encrypted({
+      request: req,
+      response: res,
+      httpStatus: HttpStatus.OK
+    });
+  }
+
+  @Get('profile')
+  async getProfile(
+    @Req() req: Request,
+    @Res() res: Response
+  ) {
+    this.logger.log("Call endpoint: (GET) v1/users/profile");
+    const { device_id } = req.headers
+
+    const userProfile = await this.profileSavedService.getProfile(device_id.toString())
+    return await this.responseEncrypted.encrypted({
+      data: userProfile,
       request: req,
       response: res,
       httpStatus: HttpStatus.OK

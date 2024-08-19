@@ -5,12 +5,11 @@ import { User } from "../../core/models/user.model";
 import { MongoRepository } from "typeorm";
 import { ExceptionBadRequest } from "../../core/exeptions/exceptionBadRequest";
 import { Codes } from "../../core/codes/codes";
-import { log } from "console";
 
 @Injectable()
-export class ProfileService {
+export class ProfileInsertService {
 
-  private logger = new Logger(ProfileService.name);
+  private logger = new Logger(ProfileInsertService.name);
 
   constructor(
     @InjectRepository(User)

@@ -1,12 +1,13 @@
 import { Module } from "@nestjs/common";
 import { UserProfileV1Controller } from "./controllers/user-profile-v1.controller";
-import { ProfileService } from "./services/profie.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "src/core/models/user.model";
 import { Codes } from "src/core/codes/codes";
 import { ResponseEncrypted } from "src/core/response/response.encrypted";
 import { Key } from "src/core/models/key.model";
 import { LbCryptoModule } from "@app/lb-crypto";
+import { ProfileInsertService } from "./services/profie-insert.service";
+import { ProfileSavedService } from "./services/profile-saved.service";
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { LbCryptoModule } from "@app/lb-crypto";
     UserProfileV1Controller
   ],
   providers: [
-    ProfileService,
+    ProfileInsertService,
+    ProfileSavedService,
     Codes,
     ResponseEncrypted
   ]

@@ -9,6 +9,8 @@ import { Codes } from '../../core/codes/codes';
 import { LbBase64Service } from '@app/lb-base64';
 import { LbJwtService } from '@app/lb-jwt';
 import { LbKeysService } from '@app/lb-keys';
+import { ConfigService } from '@nestjs/config';
+import { Configuration } from '../../config/configuration';
 
 describe('ValidCodeService', () => {
   let app: INestApplication;
@@ -53,6 +55,7 @@ describe('ValidCodeService', () => {
         LbJwtService,
         LbBase64Service,
         Codes,
+        ConfigService<Configuration>
       ],
     }).compile();
 
