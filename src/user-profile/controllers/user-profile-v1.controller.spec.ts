@@ -1,19 +1,21 @@
 import { HttpStatus, INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { UserProfileV1Controller } from "./user-profile-v1.controller";
-import { ProfileService } from "../services/profie.service";
 import { Response, Request } from 'express';
 import { MongoRepository } from "typeorm/repository/MongoRepository";
 import { Codes } from "../../core/codes/codes";
 import { ResponseEncrypted } from "../../core/response/response.encrypted";
 import { LbCryptoService } from "@app/lb-crypto";
 import { ConfigService } from "@nestjs/config";
+import { ProfileInsertService } from "../services/profie-insert.service";
+import { ProfileSavedService } from "../services/profile-saved.service";
 
 describe('UserProfileV1Controller', () => {
   let app: INestApplication;
   let userProfileV1Controller: UserProfileV1Controller
-  let profileService: ProfileService
-
+  let profileInsertService: ProfileInsertService
+  let profileSavedService: ProfileSavedService
+  
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       controllers: [
@@ -28,7 +30,8 @@ describe('UserProfileV1Controller', () => {
           provide: 'KeyRepository',
           useClass: MongoRepository,
         },
-        ProfileService,
+        ProfileInsertService,
+        ProfileSavedService,
         ConfigService,
         LbCryptoService,
         ResponseEncrypted,
@@ -40,7 +43,8 @@ describe('UserProfileV1Controller', () => {
     await app.init();
 
     userProfileV1Controller = await moduleRef.resolve(UserProfileV1Controller)
-    profileService = await moduleRef.resolve(ProfileService)
+    profileInsertService = await moduleRef.resolve(ProfileInsertService)
+    profileSavedService = await moduleRef.resolve(ProfileSavedService)
   })
 
   const mockResponse: Response = {
@@ -54,8 +58,8 @@ describe('UserProfileV1Controller', () => {
     },
   } as any;
 
-  it('a', async () => {
-    jest.spyOn(profileService, 'insert').mockResolvedValue()
+  it('when insert profile', async () => {
+    jest.spyOn(profileInsertService, 'insert').mockResolvedValue()
 
     await userProfileV1Controller.register({ name: '', photo: '' }, mockRequest, mockResponse)
     expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK);

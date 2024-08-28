@@ -8,6 +8,8 @@ import { Codes } from "../../core/codes/codes"
 import { LbKeysService } from "@app/lb-keys"
 import { LbBase64Service } from "@app/lb-base64"
 import { TOKEN_TYPE_ACCESS, TOKEN_TYPE_REFRESH } from "../../core/tokens/tokens.const"
+import { ConfigService } from "@nestjs/config"
+import { Configuration } from "../../config/configuration"
 
 describe('TokensServices', () => {
   let app: INestApplication
@@ -27,7 +29,8 @@ describe('TokensServices', () => {
         Codes,
         LbJwtService,
         LbKeysService,
-        LbBase64Service
+        LbBase64Service,
+        ConfigService<Configuration>
       ],
     }).compile();
 
