@@ -69,7 +69,7 @@ describe('TokenV1Controller', () => {
     }))
 
     await tokenV1Controller.refresh({ refresh: 'refresh' }, mockRequest, mockResponse)
-    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK);
   })
 
   afterEach(async () => {

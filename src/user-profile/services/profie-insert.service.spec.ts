@@ -1,13 +1,13 @@
 import { INestApplication } from "@nestjs/common"
 import { TestingModule, Test } from "@nestjs/testing"
-import { ProfileService } from "./profie.service"
 import { Codes } from "../../core/codes/codes"
 import { User } from "../../core/models/user.model"
 import { MongoRepository } from "typeorm"
+import { ProfileInsertService } from "./profie-insert.service"
 
-describe('ProfileService', () => {
+describe('ProfileInsertService', () => {
   let app: INestApplication
-  let profileService: ProfileService
+  let profileService: ProfileInsertService
   let userRepository: MongoRepository<User>
 
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe('ProfileService', () => {
           provide: 'UserRepository',
           useClass: MongoRepository,
         },
-        ProfileService,
+        ProfileInsertService,
         Codes
       ]
     }).compile()
@@ -26,7 +26,7 @@ describe('ProfileService', () => {
     await app.init();
 
     userRepository = await moduleRef.get<MongoRepository<User>>('UserRepository')
-    profileService = await moduleRef.resolve(ProfileService)
+    profileService = await moduleRef.resolve(ProfileInsertService)
   })
 
   it('when init process to save profile but return error should return exception', () => {
