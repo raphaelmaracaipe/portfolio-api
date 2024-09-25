@@ -84,6 +84,7 @@ export class DecryptedService {
       }
       next();
     } catch (e) {
+      this.logger.error("error to decrypted", e)
       next(e);
     }
   }
