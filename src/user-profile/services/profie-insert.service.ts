@@ -19,14 +19,15 @@ export class ProfileInsertService {
 
   async insert(deviceId: string, profile: Profile) {
     try {
-      const { photo, name } = profile
+      const { photo, name, reminder } = profile
       this.logger.log('Received data of profiles');
       await this.userRepository.updateOne({
         deviceId
       }, {
         $set: {
           photo,
-          name
+          name,
+          reminder
         }
       })
     } catch (e) {

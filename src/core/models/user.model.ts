@@ -12,6 +12,9 @@ export class User {
   name: string;
 
   @Column()
+  reminder: string;
+
+  @Column()
   deviceId: string;
 
   @Column()
