@@ -6,6 +6,8 @@ import { ContactConsultService } from "./services/contact-consult.service";
 import { ResponseEncrypted } from "src/core/response/response.encrypted";
 import { Key } from "src/core/models/key.model";
 import { LbCryptoModule } from "@app/lb-crypto";
+import { ContactStatusSocket } from "./sockets/contact-status-socket";
+import { ContactStatusService } from "./services/contact-status.service";
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { LbCryptoModule } from "@app/lb-crypto";
   ],
   providers: [
     ContactConsultService,
-    ResponseEncrypted
+    ResponseEncrypted,
+    ContactStatusSocket,
+    ContactStatusService,
   ],
   controllers: [
     ContactsV1Controller

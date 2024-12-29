@@ -61,7 +61,7 @@ describe('UserProfileV1Controller', () => {
   it('when insert profile', async () => {
     jest.spyOn(profileInsertService, 'insert').mockResolvedValue()
 
-    await userProfileV1Controller.register({ name: '', photo: '' }, mockRequest, mockResponse)
+    await userProfileV1Controller.register({ name: '', photo: '', reminder: '' }, mockRequest, mockResponse)
     expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK);
   })
 
