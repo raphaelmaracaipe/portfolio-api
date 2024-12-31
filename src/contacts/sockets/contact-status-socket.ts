@@ -9,7 +9,7 @@ import { Server } from 'socket.io';
 import { ContactStatusService } from '../services/contact-status.service';
 
 @WebSocketGateway(3001, {
-  namespace: 'contact-status'
+  namespace: 'contact-status',
 })
 export class ContactStatusSocket {
   @WebSocketServer()
@@ -19,24 +19,29 @@ export class ContactStatusSocket {
   constructor(private readonly contactStatusService: ContactStatusService) {}
 
   @SubscribeMessage('checkStatus')
-  async status(@MessageBody() data: string) {
-    this.logger.log('called socket');
-    this.logger.log(data);
+  async status(@MessageBody() data: string): Promise<void> {
+    try {
+      this.logger.log(`checkStatus called with data: ${data}`);
 
-    if (await this.contactStatusService.isOnline(data)) {
-      this.logger.warn('Status of contact saved in cache, emmit event');
-      this.server.emit(`isHeOnline${data}`);
-      return;
+      const isOnline = await this.contactStatusService.isOnline(data);
+      const event = isOnline ? `isHeOnline${data}` : `status${data}`;
+
+      this.logger.log(`Emitting event: ${event}`);
+      this.server.emit(event);
+    } catch (error) {
+      this.logger.error(`Error in checkStatus: ${error.message}`);
     }
-
-    this.logger.log('Contact not saved in cache, emmit event');
-    this.server.emit(`status${data}`);
   }
 
   @SubscribeMessage('iAmOnline')
-  async iAmOnline(@MessageBody() phone: string) {
-    this.logger.log('called socket');
-    await this.contactStatusService.setStatus(phone);
-    this.server.emit(`isHeOnline${phone}`);
+  async iAmOnline(@MessageBody() phone: string): Promise<void> {
+    try {
+      this.logger.log(`iAmOnline called with phone: ${phone}`);
+      await this.contactStatusService.setStatus(phone);
+      this.logger.log(`Emitting event: isHeOnline${phone}`);
+      this.server.emit(`isHeOnline${phone}`);
+    } catch (error) {
+      this.logger.error(`Error in iAmOnline: ${error.message}`);
+    }
   }
 }

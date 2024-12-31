@@ -3,18 +3,17 @@ import * as NodeCache from 'node-cache';
 
 @Injectable()
 export class ContactStatusService {
-  
   private readonly logger = new Logger(ContactStatusService.name);
-  private readonly cache = new NodeCache({ stdTTL: (30 * 60) });
-  
-  async setStatus(phone: string) {
+  private readonly cache = new NodeCache({ stdTTL: 30 * 60 });
+
+  setStatus(phone: string): void {
     this.logger.log(`set status in cache ${phone}`);
-    await this.cache.set(phone, true)
+    this.cache.set(phone, true);
   }
 
   async isOnline(phone: string): Promise<boolean> {
-    let saved = (await this.cache.get(phone) ? true: false)
+    const saved = this.cache.get<boolean>(phone) ?? false;
     this.logger.log(`get status in cache ${phone} -> ${saved}`);
-    return saved
+    return saved;
   }
 }
