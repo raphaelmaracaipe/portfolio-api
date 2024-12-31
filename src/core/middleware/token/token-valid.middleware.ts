@@ -13,9 +13,14 @@ export class TokenValidMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: (error?: any) => void) {
     const { authorization, device_id } = req.headers
 
-    const authorizationCleaned = authorization.replace("Bearer ", "")
+    let authorizationCleaned = ""
+    if (authorization && authorization.indexOf('Bearer ') > -1) {
+      authorizationCleaned = authorization.replace("Bearer ", "")
+    }
+
     await this.tokenValidService.valid(authorizationCleaned, device_id.toString())
 
     next()
   }
+
 }
