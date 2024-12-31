@@ -34,7 +34,7 @@ describe('ProfileInsertService', () => {
       throw Error()
     })
     try {
-      profileService.insert('', { name: '', photo: '' })
+      profileService.insert('', { name: '', photo: '', reminder: '' })
       expect(true).toEqual(false)
     } catch {
       expect(true).toEqual(true)
@@ -44,7 +44,7 @@ describe('ProfileInsertService', () => {
   it('when init process to save profile return success should return promisso void', () => {
     jest.spyOn(userRepository, 'updateOne').mockResolvedValue({})
     try {
-      profileService.insert('', { name: '', photo: '' })
+      profileService.insert('', { name: '', photo: '', reminder: '' })
       expect(true).toEqual(true)
     } catch {
       expect(true).toEqual(false)

@@ -61,7 +61,7 @@ export class DecryptedService {
       });
 
       if (keyRegistered) {
-        key = keyRegistered.key;
+        key = keyRegistered.key; 
       }
 
       const { data } = dataOfBodyEncrypted
@@ -84,7 +84,7 @@ export class DecryptedService {
       }
       next();
     } catch (e) {
-      next(e);
+      next(new ExceptionBadRequest(this.codes.USER_INVALID_LOGIN_AGAIN));
     }
   }
 

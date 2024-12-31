@@ -30,6 +30,7 @@ describe('UserCodeService', () => {
     isDeleted: false,
     createdAt: Date.now(),
     updatedAt: Date.now(),
+    reminder: '...',
   };
 
   const tokenDTO: Token = {

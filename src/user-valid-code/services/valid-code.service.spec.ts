@@ -31,6 +31,7 @@ describe('ValidCodeService', () => {
     isDeleted: false,
     createdAt: Date.now(),
     updatedAt: Date.now(),
+    reminder: 'DDD' 
   };
 
   let tokenDTO: Token = {

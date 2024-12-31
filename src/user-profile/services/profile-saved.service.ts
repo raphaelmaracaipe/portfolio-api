@@ -13,10 +13,10 @@ export class ProfileSavedService {
     private readonly userRepository: MongoRepository<User>,
   ) { }
 
-  async getProfile(deviceId: String): Promise<{ name: String, photo: String }> {
+  async getProfile(deviceId: String): Promise<{ name: String, photo: String, reminder: String }> {
     this.logger.debug("Get profile saved in server")
-    const { name, photo } = await this.userRepository.findOne({ where: { deviceId } })
-    return { name, photo }
+    const { name, photo, reminder } = await this.userRepository.findOne({ where: { deviceId } })
+    return { name, photo, reminder }
   }
 
 }

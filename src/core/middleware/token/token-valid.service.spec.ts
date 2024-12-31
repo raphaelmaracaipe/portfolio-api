@@ -84,7 +84,8 @@ describe('TokenValidService', () => {
         privateKey: "Li4u",
         createdAt: 0,
         updatedAt: 0,
-        isDeleted: false
+        isDeleted: false,
+        reminder: '...'
       })
 
       const deviceId = regex.generateRandom(REGEX_DEVICE_ID)
@@ -110,7 +111,8 @@ describe('TokenValidService', () => {
         privateKey: "Li4u",
         createdAt: 0,
         updatedAt: 0,
-        isDeleted: false
+        isDeleted: false,
+        reminder: '...'
       })
 
       const deviceId = regex.generateRandom(REGEX_DEVICE_ID)
@@ -134,7 +136,8 @@ describe('TokenValidService', () => {
         privateKey: "Li4u",
         createdAt: 0,
         updatedAt: 0,
-        isDeleted: false
+        isDeleted: false,
+        reminder: '...'
       })
 
       const deviceId = regex.generateRandom(REGEX_DEVICE_ID)

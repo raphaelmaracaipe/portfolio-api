@@ -23,6 +23,8 @@ import { User } from './core/models/user.model';
 import { LbJwtModule } from '@app/lb-jwt';
 import { LbBase64Module } from '@app/lb-base64';
 import { TokensModule } from './tokens/tokens.module';
+import { ContactsModule } from './contacts/contacts.module';
+import { ContactsV1Controller } from './contacts/controllers/contacts-v1.controller';
 
 @Module({
   imports: [
@@ -52,7 +54,8 @@ import { TokensModule } from './tokens/tokens.module';
     UserProfileModule,
     TokensModule,
     LbJwtModule,
-    LbBase64Module
+    LbBase64Module,
+    ContactsModule
   ],
   providers: [
     AuthService,
@@ -68,7 +71,8 @@ export class AppModule {
     consumer.apply(AuthMiddleware).forRoutes('');
     consumer.apply(DecryptedMiddleware).forRoutes('');
     consumer.apply(TokenValidMiddleware).forRoutes(
-      UserProfileV1Controller
+      UserProfileV1Controller,
+      ContactsV1Controller
     );
   }
 }
