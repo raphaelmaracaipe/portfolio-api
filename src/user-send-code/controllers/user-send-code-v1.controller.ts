@@ -10,8 +10,8 @@ export class UserSendCodeV1Controller {
   private logger = new Logger(UserSendCodeV1Controller.name);
 
   constructor(
-    private userCodeService: UserCodeService,
-    private responseEncrypted: ResponseEncrypted,
+    private readonly userCodeService: UserCodeService,
+    private readonly responseEncrypted: ResponseEncrypted
   ) { }
 
   @Post('code')
