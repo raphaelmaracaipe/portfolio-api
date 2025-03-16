@@ -4,7 +4,7 @@ import { MongoRepository } from 'typeorm';
 import { apiKeyTypeList } from './auth.enum';
 import { ApiKey } from '../models/apiKey.model';
 import { RegexService } from '../regex/regex.service';
-import { REGEX_API_KEY } from '../regex/regex';
+import { REGEX_API_KEY } from '../regex/regex.parttern';
 
 @Injectable()
 export class AuthService {

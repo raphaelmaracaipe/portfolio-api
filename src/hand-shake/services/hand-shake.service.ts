@@ -5,7 +5,7 @@ import { Codes } from '../../core/codes/codes';
 import { ExceptionBadRequest } from '../../core/exeptions/exceptionBadRequest';
 import { MongoRepository } from 'typeorm';
 import { RegexService } from '../../core/regex/regex.service';
-import { REGEX_KEY } from '../../core/regex/regex';
+import { REGEX_KEY } from '../../core/regex/regex.parttern';
 
 @Injectable()
 export class HandShakeService {

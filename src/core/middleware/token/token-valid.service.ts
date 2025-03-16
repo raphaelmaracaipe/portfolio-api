@@ -3,7 +3,7 @@ import { LbJwtService } from "@app/lb-jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Codes } from "../../../core/codes/codes";
 import { User } from "../../../core/models/user.model";
-import { REGEX_DEVICE_ID } from "../../../core/regex/regex";
+import { REGEX_DEVICE_ID } from "../../regex/regex.parttern";
 import { RegexService } from "../../../core/regex/regex.service";
 import { TOKEN_TYPE_ACCESS } from "../../../core/tokens/tokens.const";
 import { MongoRepository } from "typeorm";

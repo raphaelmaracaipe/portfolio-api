@@ -11,7 +11,7 @@ import { Key } from '../../core/models/key.model';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from '../../config/configuration';
 import { RegexService } from '../../core/regex/regex.service';
-import { REGEX_DEVICE_ID, REGEX_KEY } from '../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_KEY } from '../../core/regex/regex.parttern';
 
 describe('HandShakeV1Controller', () => {
   let app: INestApplication;

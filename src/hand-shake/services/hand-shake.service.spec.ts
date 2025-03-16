@@ -5,7 +5,7 @@ import { Key } from 'readline';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Codes } from '../../core/codes/codes';
 import { RegexService } from '../../core/regex/regex.service';
-import { REGEX_DEVICE_ID, REGEX_KEY } from '../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_KEY } from '../../core/regex/regex.parttern';
 
 describe('HandShakeService', () => {
   let app: INestApplication;

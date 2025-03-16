@@ -6,7 +6,7 @@ import { LbJwtService } from "@app/lb-jwt"
 import { Codes } from "../../../core/codes/codes"
 import { RegexService } from "../../../core/regex/regex.service"
 import { LbBase64Service } from "@app/lb-base64"
-import { REGEX_DEVICE_ID } from "../../../core/regex/regex"
+import { REGEX_DEVICE_ID } from "../../regex/regex.parttern"
 import { User } from "../../../core/models/user.model"
 import { TOKEN_TYPE_ACCESS, TOKEN_TYPE_REFRESH } from "../../../core/tokens/tokens.const"
 

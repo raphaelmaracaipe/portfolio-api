@@ -8,7 +8,7 @@ import { Configuration } from 'src/config/configuration';
 import { Codes } from '../../../core/codes/codes';
 import { ExceptionBadRequest } from '../../../core/exeptions/exceptionBadRequest';
 import { RegexService } from '../../../core/regex/regex.service';
-import { REGEX_DEVICE_ID, REGEX_SEED } from '../../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_SEED } from '../../regex/regex.parttern';
 import { Logger } from '@nestjs/common';
 
 export class DecryptedService {

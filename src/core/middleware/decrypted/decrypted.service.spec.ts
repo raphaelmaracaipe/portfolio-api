@@ -7,7 +7,7 @@ import { Codes } from '../../../core/codes/codes';
 import { LbCryptoService } from '@app/lb-crypto';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RegexService } from '../../../core/regex/regex.service';
-import { REGEX_DEVICE_ID, REGEX_SEED } from '../../../core/regex/regex';
+import { REGEX_DEVICE_ID, REGEX_SEED } from '../../regex/regex.parttern';
 import config from '../../../config/config';
 import { Key } from '../../../core/models/key.model';
 
