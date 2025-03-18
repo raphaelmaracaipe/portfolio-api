@@ -5,7 +5,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserSendCodeV1Controller } from './user-send-code-v1.controller';
 import { MongoRepository } from 'typeorm';
 import { Codes } from '../../core/codes/codes';
-import { ResponseEncrypted } from '../../core/response/response.encrypted';
 import { LbCryptoService } from '@app/lb-crypto';
 import { Configuration } from 'src/config/configuration';
 import { ConfigService } from '@nestjs/config';
@@ -35,7 +34,6 @@ describe('UserSendCodeV1Controller', () => {
         LbCryptoService,
         UserCodeService,
         Codes,
-        ResponseEncrypted,
       ],
     }).compile();
 

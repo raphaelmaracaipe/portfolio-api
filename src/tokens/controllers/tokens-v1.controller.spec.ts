@@ -8,7 +8,6 @@ import { LbJwtService } from "@app/lb-jwt";
 import { LbKeysService } from "@app/lb-keys";
 import { Codes } from "../../core/codes/codes";
 import { MongoRepository } from "typeorm";
-import { ResponseEncrypted } from "../../core/response/response.encrypted";
 import { LbCryptoService } from "@app/lb-crypto";
 import { ConfigService } from "@nestjs/config";
 
@@ -16,7 +15,6 @@ describe('TokenV1Controller', () => {
   let app: INestApplication;
   let tokensServices: TokensServices;
   let tokenV1Controller: TokenV1Controller;
-  let responseEncrypted: ResponseEncrypted;
 
   beforeEach(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
@@ -39,7 +37,6 @@ describe('TokenV1Controller', () => {
         LbBase64Service,
         LbCryptoService,
         ConfigService,
-        ResponseEncrypted,
       ]
     }).compile()
 
@@ -48,7 +45,6 @@ describe('TokenV1Controller', () => {
 
     tokensServices = await moduleRef.resolve(TokensServices);
     tokenV1Controller = await moduleRef.resolve(TokenV1Controller);
-    responseEncrypted = await moduleRef.resolve(ResponseEncrypted);
   })
 
   const mockResponse: Response = {

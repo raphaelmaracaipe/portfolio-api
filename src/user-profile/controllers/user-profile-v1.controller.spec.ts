@@ -4,7 +4,6 @@ import { UserProfileV1Controller } from "./user-profile-v1.controller";
 import { Response, Request } from 'express';
 import { MongoRepository } from "typeorm/repository/MongoRepository";
 import { Codes } from "../../core/codes/codes";
-import { ResponseEncrypted } from "../../core/response/response.encrypted";
 import { LbCryptoService } from "@app/lb-crypto";
 import { ConfigService } from "@nestjs/config";
 import { ProfileInsertService } from "../services/profie-insert.service";
@@ -34,7 +33,6 @@ describe('UserProfileV1Controller', () => {
         ProfileSavedService,
         ConfigService,
         LbCryptoService,
-        ResponseEncrypted,
         Codes
       ]
     }).compile()

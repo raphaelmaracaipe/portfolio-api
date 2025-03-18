@@ -6,7 +6,6 @@ import { UserCodeService } from './user-code-service.service';
 import { Token } from '../../core/models/token.model';
 import { ObjectId } from 'mongodb';
 import { Codes } from '../../core/codes/codes';
-import { Key } from '../../core/models/key.model';
 import { LbCryptoService } from '@app/lb-crypto';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from 'src/config/configuration';
@@ -16,7 +15,6 @@ describe('UserCodeService', () => {
   let userCodeService: UserCodeService;
   let userRepository: MongoRepository<User>;
   let tokenRepository: MongoRepository<Token>;
-  let keyRepository: MongoRepository<Key>;
 
   const userDTO: User = {
     id: new ObjectId('644d70b4573a660aa0ee65a4'),
@@ -67,14 +65,11 @@ describe('UserCodeService', () => {
     userCodeService = await moduleRef.resolve(UserCodeService);
     userRepository = moduleRef.get<MongoRepository<User>>('UserRepository');
     tokenRepository = moduleRef.get<MongoRepository<Token>>('TokenRepository');
-    keyRepository = moduleRef.get<MongoRepository<Key>>('KeyRepository');
   });
 
   it('Generate code of validation you and user not exist in db', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
     jest.spyOn(userRepository, 'save').mockResolvedValue(userDTO);
-    jest.spyOn(keyRepository, 'updateMany').mockResolvedValue(null);
-    jest.spyOn(keyRepository, 'findOneAndUpdate').mockResolvedValue(null);
 
     try {
       await userCodeService.generate({
@@ -92,8 +87,6 @@ describe('UserCodeService', () => {
     jest.spyOn(tokenRepository, 'findOne').mockResolvedValue(tokenDTO);
     jest.spyOn(tokenRepository, 'save').mockResolvedValue(tokenDTO);
     jest.spyOn(userRepository, 'save').mockResolvedValue(userDTO);
-    jest.spyOn(keyRepository, 'updateMany').mockResolvedValue(null);
-    jest.spyOn(keyRepository, 'findOneAndUpdate').mockResolvedValue(null);
 
     try {
       await userCodeService.generate({

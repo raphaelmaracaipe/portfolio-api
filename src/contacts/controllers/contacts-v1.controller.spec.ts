@@ -3,7 +3,6 @@ import { ContactsV1Controller } from "./contacts-v1.controller";
 import { ContactConsultService } from "../services/contact-consult.service";
 import { Test, TestingModule } from "@nestjs/testing";
 import { MongoRepository } from "typeorm";
-import { ResponseEncrypted } from "../../core/response/response.encrypted";
 import { Response, Request } from 'express';
 import { LbCryptoService } from "@app/lb-crypto";
 import { ConfigService } from "@nestjs/config";
@@ -16,12 +15,6 @@ describe('ContactsV1Controller', () => {
   const mockResponse: Response = {
     status: jest.fn().mockReturnThis(),
     send: jest.fn(),
-  } as any;
-
-  const mockRequest: Request = {
-    headers: {
-      device_id: 'AAA',
-    },
   } as any;
 
   beforeEach(async () => {
@@ -39,7 +32,6 @@ describe('ContactsV1Controller', () => {
           useClass: MongoRepository,
         },
         ContactConsultService,
-        ResponseEncrypted,
         ConfigService,
         LbCryptoService
       ]
@@ -55,7 +47,7 @@ describe('ContactsV1Controller', () => {
   it('when consult contact sent and return datas', async () => {
     jest.spyOn(contactConsultService, 'consult').mockResolvedValue([{ name: 'name te', phone: 'aa', photo: 'cc' }]);
 
-    await contactsV1Controller.consult([], mockRequest, mockResponse);
+    await contactsV1Controller.consult([], mockResponse);
     expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK);
   });
 

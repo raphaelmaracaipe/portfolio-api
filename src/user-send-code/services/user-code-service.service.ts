@@ -5,7 +5,6 @@ import { MongoRepository } from 'typeorm';
 import { LbCryptoService } from '@app/lb-crypto';
 import { Codes } from '../../core/codes/codes';
 import { ExceptionBadRequest } from '../../core/exeptions/exceptionBadRequest';
-import { Key } from '../../core/models/key.model';
 import { Token } from '../../core/models/token.model';
 import { ConfigService } from '@nestjs/config';
 import { Configuration } from 'src/config/configuration';
@@ -23,12 +22,10 @@ export class UserCodeService {
     private readonly userRepository: MongoRepository<User>,
     @InjectRepository(Token)
     private readonly tokenRepository: MongoRepository<Token>,
-    @InjectRepository(Key)
-    private readonly keyRepository: MongoRepository<Key>,
     private readonly crypto: LbCryptoService,
     private readonly codes: Codes,
     private readonly configService: ConfigService<Configuration>,
-  ) { }
+  ) {}
 
   async generate(user: UserInterface): Promise<void> {
     const { phone } = user;
@@ -59,7 +56,7 @@ export class UserCodeService {
   }
 
   private async saveDataInDB(user: UserInterface): Promise<string> {
-    const { phone, deviceId } = user;
+    const { phone } = user;
 
     const dataOfDB = await this.userRepository.findOne({
       where: { phone, isDeleted: false },
@@ -71,22 +68,8 @@ export class UserCodeService {
       updatedAt: Date.now(),
     });
 
-    this.saveUserInKey(returnOfSaved, deviceId);
     const { id } = returnOfSaved;
     return id.toString();
-  }
-
-  private async saveUserInKey(userSaved: User, deviceId: string) {
-    const { id } = userSaved;
-
-    await this.keyRepository.updateMany(
-      { idUser: id.toString() },
-      { $set: { idUser: '', updatedAt: Date.now() } },
-    );
-    await this.keyRepository.findOneAndUpdate(
-      { deviceId },
-      { $set: { idUser: id.toString(), updatedAt: Date.now() } },
-    );
   }
 
   private async generateKeyToValidationAccess(idUserSaved: string) {

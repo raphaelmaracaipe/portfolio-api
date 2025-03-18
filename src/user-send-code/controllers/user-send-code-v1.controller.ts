@@ -2,7 +2,6 @@ import { Controller, Post, Res, HttpStatus, Body, Req, Logger } from '@nestjs/co
 import { Response, Request } from 'express';
 import { User as UserInterface } from '../models/user.interface';
 import { UserCodeService } from '../services/user-code-service.service';
-import { ResponseEncrypted } from '../../core/response/response.encrypted';
 
 @Controller('v1/users')
 export class UserSendCodeV1Controller {
@@ -10,8 +9,7 @@ export class UserSendCodeV1Controller {
   private logger = new Logger(UserSendCodeV1Controller.name);
 
   constructor(
-    private userCodeService: UserCodeService,
-    private responseEncrypted: ResponseEncrypted,
+    private readonly userCodeService: UserCodeService,
   ) { }
 
   @Post('code')
@@ -29,10 +27,6 @@ export class UserSendCodeV1Controller {
       deviceId: device_id.toString(),
     });
 
-    return this.responseEncrypted.encrypted({
-      httpStatus: HttpStatus.OK,
-      request: req,
-      response: res,
-    });
+    return res.status(HttpStatus.OK).send("{}");
   }
 }

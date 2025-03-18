@@ -5,7 +5,6 @@ import { UserValidCodeV1Controller } from './user-valid-code-v1.controller';
 import { ValidCodeService } from '../services/valid-code.service';
 import { MongoRepository } from 'typeorm';
 import { Codes } from '../../core/codes/codes';
-import { ResponseEncrypted } from '../../core/response/response.encrypted';
 import { LbBase64Service } from '@app/lb-base64';
 import { LbJwtService } from '@app/lb-jwt';
 import { LbKeysService } from '@app/lb-keys';
@@ -26,7 +25,7 @@ describe('UserValidCodeV1Controller', () => {
   const mockRequest: Request = {
     headers: {
       dev: 'true',
-      device_id: 'bEV2fPGKf12SE8WaDQeU'
+      device_id: 'bEV2fPGKf12SE8WaDQeU',
     },
   } as any;
 
@@ -52,7 +51,6 @@ describe('UserValidCodeV1Controller', () => {
         LbJwtService,
         LbBase64Service,
         Codes,
-        ResponseEncrypted,
         LbCryptoService,
       ],
     }).compile();
@@ -70,6 +68,7 @@ describe('UserValidCodeV1Controller', () => {
       .mockImplementation(() =>
         Promise.resolve({ accessToken: 'a', refreshToken: 'a' }),
       );
+      
     await userController.valid('1', mockRequest, mockResponse);
     expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.CREATED);
   });

@@ -2,7 +2,6 @@ import { Body, Controller, HttpStatus, Logger, Post, Req, Res } from "@nestjs/co
 import { Response, Request } from 'express';
 import { Token } from "../models/token.interface";
 import { TokensServices } from "../../tokens/services/tokens.service";
-import { ResponseEncrypted } from "../../core/response/response.encrypted";
 
 @Controller('v1/tokens')
 export class TokenV1Controller {
@@ -10,8 +9,7 @@ export class TokenV1Controller {
   private logger = new Logger(TokenV1Controller.name)
 
   constructor(
-    private readonly tokensServices: TokensServices,
-    private readonly responseEncrypted: ResponseEncrypted,
+    private readonly tokensServices: TokensServices
   ) { }
 
   @Post('refresh')

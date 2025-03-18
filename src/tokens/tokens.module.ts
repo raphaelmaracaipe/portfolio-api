@@ -7,13 +7,11 @@ import { Codes } from "src/core/codes/codes";
 import { LbKeysModule } from "@app/lb-keys";
 import { LbBase64Module } from "@app/lb-base64";
 import { TokensServices } from "src/tokens/services/tokens.service";
-import { ResponseEncrypted } from "src/core/response/response.encrypted";
-import { Key } from "src/core/models/key.model";
 import { LbCryptoModule } from "@app/lb-crypto";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Key]),
+    TypeOrmModule.forFeature([User]),
     LbJwtModule,
     LbKeysModule,
     LbBase64Module,
@@ -21,8 +19,7 @@ import { LbCryptoModule } from "@app/lb-crypto";
   ],
   providers: [
     Codes,
-    TokensServices,
-    ResponseEncrypted
+    TokensServices
   ],
   controllers: [
     TokenV1Controller

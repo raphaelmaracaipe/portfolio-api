@@ -1,7 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Logger, Post, Req, Res } from "@nestjs/common";
 import { Response, Request } from 'express';
 import { Profile } from "../models/profile.interface";
-import { ResponseEncrypted } from "../../core/response/response.encrypted";
 import { ProfileInsertService } from "../services/profie-insert.service";
 import { ProfileSavedService } from "../services/profile-saved.service";
 
@@ -12,8 +11,7 @@ export class UserProfileV1Controller {
 
   constructor(
     private readonly profileInsertService: ProfileInsertService,
-    private readonly profileSavedService: ProfileSavedService,
-    private readonly responseEncrypted: ResponseEncrypted
+    private readonly profileSavedService: ProfileSavedService
   ) { }
 
   @Post('profile')
@@ -26,11 +24,7 @@ export class UserProfileV1Controller {
     const { device_id } = req.headers
     await this.profileInsertService.insert(device_id.toString(), profile)
 
-    return await this.responseEncrypted.encrypted({
-      request: req,
-      response: res,
-      httpStatus: HttpStatus.OK
-    });
+    return res.status(HttpStatus.OK).send("{}");
   }
 
   @Get('profile')
@@ -42,12 +36,7 @@ export class UserProfileV1Controller {
     const { device_id } = req.headers
 
     const userProfile = await this.profileSavedService.getProfile(device_id.toString())
-    return await this.responseEncrypted.encrypted({
-      data: userProfile,
-      request: req,
-      response: res,
-      httpStatus: HttpStatus.OK
-    });
+    return res.status(HttpStatus.OK).send(userProfile);
   }
 
 }
