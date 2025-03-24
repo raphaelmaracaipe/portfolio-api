@@ -15,6 +15,7 @@ import { CleanKeySchedule } from './schedules/clean_keys/clean_keys.schedule';
 import { CleanKeyService } from './schedules/clean_keys/clean_keys.service';
 import { CodesExpirationsSchedule } from './schedules/codes_expirations/codes_expirations.schedule';
 import { CodesExpirationsService } from './schedules/codes_expirations/codes_expirations.service';
+import { User } from './models/user.model';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { CodesExpirationsService } from './schedules/codes_expirations/codes_exp
     TypeOrmModule.forFeature([
       Key, 
       Token,
-      ApiKey
+      ApiKey,
+      User
     ]),
   ],
   providers: [
