@@ -15,7 +15,7 @@ export class AuthMiddleware implements NestMiddleware {
         next();
       } else {
         this.logger.error(`token is not valid: ${value}`);
-        throw new ExceptionUnathorizedRequest('');
+        next(new ExceptionUnathorizedRequest(''));
       }
     })(req, res, next);
   }
